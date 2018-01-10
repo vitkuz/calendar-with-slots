@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <title>Title</title>
-
+  <link rel="stylesheet" href="styleguide.css">
+  <link rel="stylesheet" href="styles.css">
   <style>
     #rowCal {
       overflow-x: scroll;
@@ -13,6 +14,10 @@
 
 </head>
 <body>
+1) what time slots are avalible? is it fixed?
+2) can i select muliple slots in different days?
+3) how it will handle backend?
+
 <input type="text" id="txtDate" value="">
 <div id="ContentPlaceHolder1_lblMonth">12</div>
 <div id="ContentPlaceHolder1_lblYear">2018</div>
@@ -29,9 +34,72 @@
   <div class="next">next</div>
 
 </div>
-<div id="rowCal">
+
+<div class="custom-calendar">
+  <h3>Calendar</h3>
+  <div class="custom-calendar__controls">
+    <a href="#">Previous day</a>
+    <a href="#">Next day</a>
+  </div>
+  <div id="rowCal">
+
+  </div>
+  <h3 id="daySlotsTitle">Slots for ...</h3>
+  <div id="daySlots">
+
+  </div>
+
+  <div class="custom-calendar__slots">
+    <fieldset class="timeslot-picker">
+      <legend class="timeslot-picker__label">Choose a time slot (checkbox)</legend>
+      <div class="timeslot-picker__list">
+        <label class="timeslot-picker__item">
+          <input class="timeslot-picker__check" type="checkbox" id="checkbox1" value="option1">
+          <span class="timeslot-picker__time">09:00am</span>
+        </label>
+        <label class="timeslot-picker__item">
+          <input class="timeslot-picker__check" type="checkbox" id="checkbox2" value="option2">
+          <span class="timeslot-picker__time">10:00am</span>
+        </label>
+        <label class="timeslot-picker__item">
+          <input class="timeslot-picker__check" type="checkbox" id="checkbox3" value="option3">
+          <span class="timeslot-picker__time">11:00am</span>
+        </label>
+        <label class="timeslot-picker__item">
+          <input class="timeslot-picker__check" type="checkbox" id="checkbox4" value="option4">
+          <span class="timeslot-picker__time">12:00pm</span>
+        </label>
+        <label class="timeslot-picker__item">
+          <input class="timeslot-picker__check" type="checkbox" id="checkbox5" value="option5">
+          <span class="timeslot-picker__time">01:00pm</span>
+        </label>
+        <label class="timeslot-picker__item">
+          <input class="timeslot-picker__check" type="checkbox" id="checkbox6" value="option6">
+          <span class="timeslot-picker__time">02:00pm</span>
+        </label>
+      </div>
+    </fieldset>
+  </div>
+
+  <div id="result">
+
+  </div>
 
 </div>
+
+<script type="text/x-tmpl" id="tmpl-demo">
+  <hr>
+  <h3>{%=o.title%}</h3>
+    <p>Released under the
+    <a href="{%=o.license.url%}">{%=o.license.name%}</a>.</p>
+    <h4>Features</h4>
+    <ul>
+    {% for (var i=0; i<o.features.length; i++) { %}
+        <li>{%=o.features[i]%}</li>
+    {% } %}
+  </ul>
+</script>
+<script src="./tmpl.min.js"></script>
 <script src="./custom_calendar_1.js"></script>
 </body>
 </html>

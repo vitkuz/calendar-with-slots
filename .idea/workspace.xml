@@ -1,7 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a346b801-8a04-4806-bf17-1306ced4aad5" name="Default" comment="" />
+    <list default="true" id="a346b801-8a04-4806-bf17-1306ced4aad5" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fonts/ee-icons.eot" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fonts/ee-icons.ttf" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fonts/ee-icons.woff" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fonts/nobblee_light.eot" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fonts/nobblee_light.ttf" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fonts/nobblee_light.woff" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fonts/nobblee_regular.eot" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fonts/nobblee_regular.ttf" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fonts/nobblee_regular.woff" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fonts/rubrik_icon.eot" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fonts/rubrik_icon.ttf" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fonts/rubrik_icon.woff" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fonts/rubrik_light.eot" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fonts/rubrik_light.ttf" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fonts/rubrik_light.woff" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fonts/rubrik_regular.eot" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fonts/rubrik_regular.ttf" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fonts/rubrik_regular.woff" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fonts/rubrik_semibold.eot" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fonts/rubrik_semibold.ttf" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fonts/rubrik_semibold.woff" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/loading_spinner.gif" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fonts/ee-icons.svg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fonts/nobblee_light.svg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fonts/nobblee_regular.svg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fonts/rubrik_icon.dev.svg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fonts/rubrik_icon.svg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fonts/rubrik_light.svg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fonts/rubrik_regular.svg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fonts/rubrik_semibold.svg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styleguide.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/styles.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tmpl.min.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/custom_calendar_1.js" afterPath="$PROJECT_DIR$/custom_calendar_1.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.html" afterPath="$PROJECT_DIR$/index.html" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -15,14 +52,23 @@
       <file leaf-file-name="custom_calendar_1.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/custom_calendar_1.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="681">
-              <caret line="328" column="83" lean-forward="false" selection-start-line="328" selection-start-column="83" selection-end-line="328" selection-end-column="83" />
+            <state relative-caret-position="293">
+              <caret line="536" column="3" lean-forward="true" selection-start-line="536" selection-start-column="3" selection-end-line="536" selection-end-column="3" />
               <folding>
-                <marker date="1515512739658" expanded="true" signature="3088:3120" ph="..." />
-                <marker date="1515512739658" expanded="true" signature="3196:3223" ph="..." />
-                <marker date="1515512739658" expanded="true" signature="4274:4306" ph="..." />
-                <marker date="1515512739658" expanded="true" signature="4394:4421" ph="..." />
+                <marker date="1515598824348" expanded="true" signature="4349:4381" ph="..." />
+                <marker date="1515598824348" expanded="true" signature="4457:4484" ph="..." />
+                <marker date="1515598824348" expanded="true" signature="6124:6156" ph="..." />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="styles.css" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/styles.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="171">
+              <caret line="9" column="33" lean-forward="false" selection-start-line="9" selection-start-column="33" selection-end-line="9" selection-end-column="33" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -30,8 +76,30 @@
       <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="475">
-              <caret line="25" column="29" lean-forward="false" selection-start-line="25" selection-start-column="14" selection-end-line="25" selection-end-column="29" />
+            <state relative-caret-position="-570">
+              <caret line="18" column="3" lean-forward="false" selection-start-line="18" selection-start-column="3" selection-end-line="18" selection-end-column="3" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="styleguide.css" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/styleguide.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="510">
+              <caret line="5014" column="0" lean-forward="false" selection-start-line="5014" selection-start-column="0" selection-end-line="5014" selection-end-column="0" />
+              <folding>
+                <element signature="e#32162#32321#2" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="tmpl.min.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/tmpl.min.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="19">
+              <caret line="1" column="36" lean-forward="false" selection-start-line="1" selection-start-column="36" selection-end-line="1" selection-end-column="36" />
               <folding />
             </state>
           </provider>
@@ -43,13 +111,20 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="HTML File" />
+        <option value="CSS File" />
       </list>
     </option>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
       <find>ContentPlaceHolder1_lblMonth</find>
+      <find>giveMeSlotsForThisDay</find>
+      <find>month</find>
+      <find>createCalenderTable</find>
     </findStrings>
+    <replaceStrings>
+      <replace>month</replace>
+    </replaceStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -57,6 +132,9 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
+        <option value="$PROJECT_DIR$/tmpl.min.js" />
+        <option value="$PROJECT_DIR$/styles.css" />
+        <option value="$PROJECT_DIR$/styleguide.css" />
         <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/custom_calendar_1.js" />
       </list>
@@ -115,6 +193,12 @@
     <property name="JavaScriptWeakerCompletionTypeGuess" value="true" />
     <property name="WebServerToolWindowFactoryState" value="true" />
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
+    <property name="list.type.of.created.stylesheet" value="CSS" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Vitali_Kuzmenka\PhpstormProjects\custom_calendar_js" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -201,12 +285,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1515508159566</updated>
-      <workItem from="1515508161722" duration="4705000" />
+      <workItem from="1515508161722" duration="29568000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="4705000" />
+    <option name="totallyTimeSpent" value="29568000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -217,9 +301,9 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32998884" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32998884" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32998884" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -238,27 +322,54 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager />
+    <breakpoint-manager>
+      <option name="time" value="1" />
+    </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/tmpl.min.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="19">
+          <caret line="1" column="36" lean-forward="false" selection-start-line="1" selection-start-column="36" selection-end-line="1" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/styles.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="171">
+          <caret line="9" column="33" lean-forward="false" selection-start-line="9" selection-start-column="33" selection-end-line="9" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/styleguide.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="510">
+          <caret line="5014" column="0" lean-forward="false" selection-start-line="5014" selection-start-column="0" selection-end-line="5014" selection-end-column="0" />
+          <folding>
+            <element signature="e#32162#32321#2" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="475">
-          <caret line="25" column="29" lean-forward="false" selection-start-line="25" selection-start-column="14" selection-end-line="25" selection-end-column="29" />
+        <state relative-caret-position="-570">
+          <caret line="18" column="3" lean-forward="false" selection-start-line="18" selection-start-column="3" selection-end-line="18" selection-end-column="3" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/custom_calendar_1.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="681">
-          <caret line="328" column="83" lean-forward="false" selection-start-line="328" selection-start-column="83" selection-end-line="328" selection-end-column="83" />
+        <state relative-caret-position="293">
+          <caret line="536" column="3" lean-forward="true" selection-start-line="536" selection-start-column="3" selection-end-line="536" selection-end-column="3" />
           <folding>
-            <marker date="1515512739658" expanded="true" signature="3088:3120" ph="..." />
-            <marker date="1515512739658" expanded="true" signature="3196:3223" ph="..." />
-            <marker date="1515512739658" expanded="true" signature="4274:4306" ph="..." />
-            <marker date="1515512739658" expanded="true" signature="4394:4421" ph="..." />
+            <marker date="1515598824348" expanded="true" signature="4349:4381" ph="..." />
+            <marker date="1515598824348" expanded="true" signature="4457:4484" ph="..." />
+            <marker date="1515598824348" expanded="true" signature="6124:6156" ph="..." />
           </folding>
         </state>
       </provider>

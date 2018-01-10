@@ -1,76 +1,113 @@
-var curMonth = parseInt(document.getElementById("ContentPlaceHolder1_lblMonth").innerText);
-document.getElementById("ContentPlaceHolder1_lblMonthDDD").innerText = convertMonth_ddToDDD(curMonth);
-previous();
+var slotObject = {
+  autoshow:true,
+  today: returnToday(),
+  todayToString: function () {
+    return this.today.day+'/'+this.today.month+'/'+this.today.year
+  },
+  // by default will be selected Today
+  selected: {
+    day:returnToday().day,
+    month:returnToday().month,
+    year:returnToday().year,
+  },
+  selectedToString: function () {
+    return this.today.day+'/'+this.today.month+'/'+this.today.year
+  },
+  dates: []
+};
+
+console.log('today',slotObject.today);
+console.log('todayToString',slotObject.todayToString());
+console.log('selected',slotObject.selected);
+console.log('selectedToString',slotObject.selectedToString());
+//-------------------------------------
+//-------------------------------------
+//-------------------------------------
+//-------------------------------------
+//-------------------------------------
+
+
+// createCalenderTable(slotObject.selected.month, slotObject.selected.year);
+// createCalenderRow(slotObject.selected.month, slotObject.selected.year);
+
+
+// var curmonth = parseInt(document.getElementById("ContentPlaceHolder1_lblmonth").innerText);
+// document.getElementById("ContentPlaceHolder1_lblmonthDDD").innerText = convertmonth_ddToDDD(curmonth);
+
+// createCalenderTable(slotObject.today.month, slotObject.today.year);
+createCalenderRow(slotObject.today.month, slotObject.today.year);
 
 function previous() {
-  var curMonth = parseInt(document.getElementById("ContentPlaceHolder1_lblMonth").innerText);
-  var curYear = parseInt(document.getElementById("ContentPlaceHolder1_lblYear").innerText)
+  // var curmonth = parseInt(document.getElementById("ContentPlaceHolder1_lblmonth").innerText);
+  // var curYear = parseInt(document.getElementById("ContentPlaceHolder1_lblYear").innerText)
   
-  var prevMonth = getPreviousMonth(curMonth, curYear);
-  var prevYear = getPreviousYear(curMonth, curYear);
+  var prevmonth = getPreviousmonth(curmonth, curYear);
+  var prevYear = getPreviousYear(curmonth, curYear);
   
-  document.getElementById("ContentPlaceHolder1_lblMonth").innerText = prevMonth;
-  document.getElementById("ContentPlaceHolder1_lblMonthDDD").innerText = convertMonth_ddToDDD(prevMonth);
+  document.getElementById("ContentPlaceHolder1_lblmonth").innerText = prevmonth;
+  document.getElementById("ContentPlaceHolder1_lblmonthDDD").innerText = convertmonth_ddToDDD(prevmonth);
   document.getElementById("ContentPlaceHolder1_lblYear").innerText = prevYear;
   
-  createCalenderTable(prevMonth, prevYear);
+  createCalenderTable(prevmonth, prevYear);
+  createCalenderRow(prevmonth, prevYear);
   
   return false;
 }
 
 function next() {
   
-  var curMonth = parseInt(document.getElementById("ContentPlaceHolder1_lblMonth").innerText);
-  var curYear = parseInt(document.getElementById("ContentPlaceHolder1_lblYear").innerText)
+  // var curmonth = parseInt(document.getElementById("ContentPlaceHolder1_lblmonth").innerText);
+  // var curYear = parseInt(document.getElementById("ContentPlaceHolder1_lblYear").innerText)
   
-  var nextMonth = getNextMonth(curMonth, curYear);
-  var nextYear = getNextYear(curMonth, curYear);
+  var nextmonth = getNextmonth(curmonth, curYear);
+  var nextYear = getNextYear(curmonth, curYear);
   
-  document.getElementById("ContentPlaceHolder1_lblMonth").innerText = nextMonth;
-  document.getElementById("ContentPlaceHolder1_lblMonthDDD").innerText = convertMonth_ddToDDD(nextMonth);
+  document.getElementById("ContentPlaceHolder1_lblmonth").innerText = nextmonth;
+  document.getElementById("ContentPlaceHolder1_lblmonthDDD").innerText = convertmonth_ddToDDD(nextmonth);
   document.getElementById("ContentPlaceHolder1_lblYear").innerText = nextYear;
   
-  createCalenderTable(nextMonth, nextYear);
+  createCalenderTable(nextmonth, nextYear);
+  createCalenderRow(nextmonth, nextYear);
   return false;
 }
 
-function getPreviousMonth(curMonth, curYear) {
-  //alert("current: "+ curMonth +" "+curYear);
-  var prevMonth;
+function getPreviousmonth(curmonth, curYear) {
+  //alert("current: "+ curmonth +" "+curYear);
+  var prevmonth;
   //for month: ...3, 2, 1, 12, 11, 10...
-  if (curMonth == 1) {
-    prevMonth = 12;
+  if (curmonth == 1) {
+    prevmonth = 12;
   } else {
-    prevMonth = curMonth - 1;
+    prevmonth = curmonth - 1;
   }
   
-  //alert(prevMonth + " " + prevYear);
+  //alert(prevmonth + " " + prevYear);
   
-  return prevMonth;
+  return prevmonth;
 }
 
-function getNextMonth(curMonth, curYear) {
-  //alert("current: "+ curMonth +" "+curYear);
-  var nextMonth;
+function getNextmonth(curmonth, curYear) {
+  //alert("current: "+ curmonth +" "+curYear);
+  var nextmonth;
   //for month: ...3, 2, 1, 12, 11, 10...
-  if (curMonth == 12) {
-    nextMonth = 1;
+  if (curmonth == 12) {
+    nextmonth = 1;
   } else {
-    nextMonth = curMonth + 1;
+    nextmonth = curmonth + 1;
   }
   
-  //alert(prevMonth + " " + prevYear);
+  //alert(prevmonth + " " + prevYear);
   
-  return nextMonth;
+  return nextmonth;
 }
 
-function getPreviousYear(curMonth, curYear) {
-  //alert("current: " + curMonth + " " + curYear);
-  //var prevMonth;
+function getPreviousYear(curmonth, curYear) {
+  //alert("current: " + curmonth + " " + curYear);
+  //var prevmonth;
   var prevYear;
   
   //for prev year if month==12 the decrement
-  if (curMonth == 1) {
+  if (curmonth == 1) {
     prevYear = curYear - 1;
   } else {
     prevYear = curYear;
@@ -79,13 +116,13 @@ function getPreviousYear(curMonth, curYear) {
   return prevYear;
 }
 
-function getNextYear(curMonth, curYear) {
-  //alert("current: " + curMonth + " " + curYear);
-  //var prevMonth;
+function getNextYear(curmonth, curYear) {
+  //alert("current: " + curmonth + " " + curYear);
+  //var prevmonth;
   var nextYear;
   
   //for prev year if month==12 the decrement
-  if (curMonth == 12) {
+  if (curmonth == 12) {
     nextYear = curYear + 1;
   } else {
     nextYear = curYear;
@@ -104,10 +141,12 @@ function isThisLeapYear(year) {
   }
 }
 
-function createCalenderTable(monthNo = 12, year = 2017) {
+function createCalenderTable(monthNo, year) {
   
-  var totalDays = getTotalDaysForThisMonth(monthNo, year);
-  var firstDateDayNo = getMonthFirstDate_DayNo(monthNo, year);
+  console.log('createCalenderTable ',monthNo, year)
+  
+  var totalDays = getTotalDaysForThismonth(monthNo, year);
+  var firstDateDayNo = getmonthFirstDate_DayNo(monthNo, year);
   
   var tableHeader = "<table  style='box-shadow:3px 3px 24px 1px gray' cellPadding='10' border='1px solid black'>";
   tableHeader += "<tr style='background-color:lightgray;'><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th>" + trEnd;
@@ -130,7 +169,24 @@ function createCalenderTable(monthNo = 12, year = 2017) {
         firstDateDayNo--;
         j++;
       }
-      rowContent += "<td id='" + i + "' onclick='return setThisSelectedDateToTextBox(" + i + ");'>" + i + "</td>";
+      
+      var classes ='';
+  
+      if (i === slotObject.selected.day) {
+        classes += 'selected ';
+      }
+  
+      if (i === slotObject.today.day) {
+        classes += 'today ';
+      }
+      
+      var tdDate = {
+        day: i,
+        mount: monthNo,
+        year: year,
+      }
+      
+      rowContent += "<td id='" + i + "' onclick='return selectDate(" + tdDate + ");' class='"+classes+"'>" + i + "</td>";
     }
     rowContent += trEnd;
     //i+=7;
@@ -138,17 +194,23 @@ function createCalenderTable(monthNo = 12, year = 2017) {
   
   //var tableOuter = "<table><tr><td>"+"</td></tr></table>";
   document.getElementById("divCal").innerHTML = tableHeader + rowContent + tableEnd;
+  
+  if (slotObject.autoshow) {
+    selectDate(slotObject.selectedToString());
+  }
 }
 
-
-function createCalenderRow(monthNo = 12, year = 2017) {
+function createCalenderRow(monthNo, year) {
   
-  var totalDays = getTotalDaysForThisMonth(monthNo, year);
-  var firstDateDayNo = getMonthFirstDate_DayNo(monthNo, year);
+  console.log('createCalenderRow ', monthNo, year);
+  console.log('selected:', slotObject.selected.month, slotObject.selected.year);
+  
+  var totalDays = getTotalDaysForThismonth(monthNo, year);
+  var firstDateDayNo = getmonthFirstDate_DayNo(monthNo, year);
+  
+  console.log('total days = %d, first date= %d',totalDays,firstDateDayNo)
   
   var tableHeader = "<table  style='box-shadow:3px 3px 24px 1px gray' cellPadding='10' border='1px solid black'>";
-  
-  
   
   // tableHeader += "<tr style='background-color:lightgray;'><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th>" + trEnd;
   
@@ -159,14 +221,13 @@ function createCalenderRow(monthNo = 12, year = 2017) {
   var rowContent = "";
   
   var countRows = 0;
- 
+  
   var i = 1;
   
   //week
   rowContent += trStart;
   while (i <= totalDays) {
     
-  
     for (var j = 0; j <= 6 && i <= totalDays; j++, i++) {
       
       while (firstDateDayNo > 0) {
@@ -174,14 +235,27 @@ function createCalenderRow(monthNo = 12, year = 2017) {
         firstDateDayNo--;
         j++;
       }
-      rowContent += "<td id='" + i + "' onclick='return setThisSelectedDateToTextBox(" + i + ");'>" + i + "</td>";
+  
+      var classes = '';
+      
+      if (i === parseInt(slotObject.selected.day,10)) {
+        classes += 'selected ';
+      }
+      
+      if (i === parseInt(slotObject.today.day,10)) {
+        classes += 'today ';
+      }
+      
+      var tdDateString = i + '/' + monthNo + '/' +year;
+
+      rowContent += "<td data-date=\""+tdDateString+"\" id='" + i + "' class=\""+classes+"\">" + i + "</td>";
     }
     countRows++;
   }
   rowContent += trEnd;
   
   tableHeader += trStart;
-  for (var h = 0 ; h < countRows; h++) {
+  for (var h = 0; h < countRows; h++) {
     tableHeader += '<th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th>'
   }
   tableHeader += trEnd;
@@ -190,15 +264,16 @@ function createCalenderRow(monthNo = 12, year = 2017) {
   document.getElementById("rowCal").innerHTML = tableHeader + rowContent + tableEnd;
 }
 
-function getMonthFirstDate_DayNo(monthNo, year) {
-  
+function getmonthFirstDate_DayNo(monthNo, year) {
+  monthNo = parseInt(monthNo,10);
+  year = parseInt(year,10);
   var dt = new Date(year, monthNo - 1, 1);
-  // alert(dt+"----"+dt.getDay());
   return dt.getDay();
 }
 
-function getTotalDaysForThisMonth(monthNo, year) {
-  
+function getTotalDaysForThismonth(monthNo, year) {
+  monthNo = parseInt(monthNo,10);
+  year = parseInt(year,10);
   switch (monthNo) {
     case 1:
     case 3:
@@ -233,8 +308,8 @@ function getTotalDaysForThisMonth(monthNo, year) {
   
 }
 
-function convertMonth_ddToDDD(thisMonth) {
-  var month = thisMonth;
+function convertmonth_ddToDDD(thismonth) {
+  var month = parseInt(thismonth,10);
   
   switch (month) {
     case 1:
@@ -281,7 +356,7 @@ function convertMonth_ddToDDD(thisMonth) {
 }
 
 function convertDayNumber_to_dayName(dayNo) {
-  
+  dayNo = parseInt(dayNo,10);
   switch (dayNo) {
     case 0:
       return "Sunday";
@@ -310,22 +385,179 @@ function convertDayNumber_to_dayName(dayNo) {
   }
 }
 
-function setThisSelectedDateToTextBox(selectedDate) {
+function giveMeDemoSlotsForThisDay() {
+  var slots = [
+    {
+      id: 1,
+      taken: Math.random() >= 0.5,
+      confirmed: Math.random() >= 0.5
+    },
+    {
+      id: 2,
+      taken: Math.random() >= 0.5,
+      confirmed: Math.random() >= 0.5
+    },
+    {
+      id: 8,
+      taken: Math.random() >= 0.5,
+      confirmed: Math.random() >= 0.5
+    },
+    {
+      id: 9,
+      taken: Math.random() >= 0.5,
+      confirmed: Math.random() >= 0.5
+    },
+    {
+      id: 10,
+      taken: Math.random() >= 0.5,
+      confirmed: Math.random() >= 0.5
+    },
+    {
+      id: 11,
+      taken: Math.random() >= 0.5,
+      confirmed: Math.random() >= 0.5
+      
+    }
+  ]
   
-  updateSlotObject(selectedDate)
-  
-  var curMonth = document.getElementById("ContentPlaceHolder1_lblMonth").innerText;
-  var curYear = document.getElementById("ContentPlaceHolder1_lblYear").innerText;
-  document.getElementById("txtDate").value = selectedDate + "/" + curMonth + "/" + curYear;
-  //alert(selectedDate + "/" + curMonth + "/" + curYear);
+  return slots;
 }
 
-var slotObject = {selectedDates:[]}
+function returnToday() {
+  var today = new Date();
+  
+  return {
+    day: today.getDay(),
+    month: today.getDate(),
+    year: today.getFullYear(),
+  }
+}
+
+function selectDate(date) {
+  
+  console.log(this.event);
+  
+  date = date.split('/');
+  var selectedDay = date[0];
+  var selectedMonth = date[1];
+  var selectedYear = date[2];
+  
+  var selectedDate = {
+    day:selectedDay,
+    month:selectedMonth,
+    year:selectedYear
+  };
+  
+  slotObject.selected = selectedDate;
+  
+  createCalenderRow(slotObject.selected.month, slotObject.selected.year);
+  
+  
+  // todo: wrap below in a function
+  console.log('Asking for slots...',slotObject.selected);
+  console.log('Show spinner');
+  document.getElementById("daySlots").innerHTML = '<img src="./loading_spinner.gif" />';
+  
+  fakeAjaxResponce_giveMeAvalibleSlotsFoDate(function () {
+    var fakeAjaxSuccess = {date:slotObject.selected, slots:giveMeDemoSlotsForThisDay()};
+    
+    console.log('Hide spinner and render slots');
+    document.getElementById("daySlots").innerHTML = '';
+    console.log(fakeAjaxSuccess);
+    slotObject.dates.push(fakeAjaxSuccess);
+    renderSlots(fakeAjaxSuccess);
+  });
+  
+}
 
 function updateSlotObject(selectedDate) {
-  var curMonth = document.getElementById("ContentPlaceHolder1_lblMonth").innerText;
-  var curYear = document.getElementById("ContentPlaceHolder1_lblYear").innerText;
+  // var curmonth = document.getElementById("ContentPlaceHolder1_lblmonth").innerText;
+  // var curYear = document.getElementById("ContentPlaceHolder1_lblYear").innerText;
   
-  slotObject.selectedDates.push({date:selectedDate + "/" + curMonth + "/" + curYear, slots: []});
-  console.log(slotObject);
+  // var curmonth = slotObject.
+  //
+  // slotObject.selected = selectedDate;
+  // slotObject.dates.push({date: selectedDate, slots: giveMeDemoSlotsForThisDay()});
+  // renderSlots(slotObject, selectedDate);
+
 }
+
+function fakeAjaxResponce_giveMeAvalibleSlotsFoDate (cb) {
+  setTimeout(cb, 1000);
+}
+
+function reserveSlot(i) {
+  console.log('Send request to reserve slot'+i);
+}
+
+function renderSlots({ date, slots}) {
+  
+  // var day = getDayWithSlots(slotObject.selected);
+  // console.log(day);
+  // var slots = day.slots;
+  //
+  var len = slots.length;
+
+  var slotsStartStr = '<div class="slots">';
+  var slotsStr = '';
+  var slotsEndStr = '</div>';
+
+  for (var i =0; i < len; i++) {
+
+    var clases = slots[i].taken ? 'slot--selected' : 'slot';
+
+    slotsStr += '<div class="'+clases+'" onclick="return reserveSlot(' + i + ');">'+slots[i].id+'</div>';
+  }
+
+  document.getElementById("daySlotsTitle").innerHTML = 'Slots for '+date.day;
+  document.getElementById("daySlots").innerHTML = slotsStartStr + slotsStr + slotsEndStr;
+}
+
+document.getElementById("daySlots").addEventListener('click', function (e) {
+
+  if(e.target && e.target.nodeName == "TD") {
+    console.log('td is clicked',e.target);
+  }
+  
+});
+
+document.getElementById("rowCal").addEventListener('click', function (e) {
+
+  if(e.target && e.target.nodeName == "TD") {
+    console.log('td is clicked',e.target);
+    selectDate(e.target.getAttribute('data-date'));
+  }
+  
+});
+
+document.getElementById("nextDay").addEventListener('click', function (e) {
+  
+  if(e.target) {
+    // selectDate(e.target.getAttribute('data-date'));
+  }
+  
+});
+
+document.getElementById("previousDay").addEventListener('click', function (e) {
+  
+  if(e.target) {
+    // selectDate(e.target.getAttribute('data-date'));
+  }
+  
+});
+
+
+var data = {
+  title: "JavaScript Templates",
+  license: {
+    "name": "MIT license",
+    "url": "https://opensource.org/licenses/MIT"
+  },
+  features: [
+    "lightweight & fast",
+    "powerful",
+    "zero dependencies"
+  ]
+};
+
+document.getElementById("result").innerHTML = tmpl("tmpl-demo", data);

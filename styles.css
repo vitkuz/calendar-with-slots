@@ -1,0 +1,35 @@
+.custom-calendar {
+  width: 50%;
+  margin: auto;
+  border: 1px solid;
+  padding: 3px;
+}
+
+.custom-calendar__controls {
+  display: flex;
+  justify-content: space-between;
+}
+
+.slot {
+  background: gray;
+  border:1px solid;
+  padding:3px;
+}
+
+.slot--selected {
+  background: red;
+}
+
+td:hover {
+  background: ghostwhite;
+}
+
+td.today {
+  background:green;
+  color: #fff;
+}
+
+td.selected {
+  background: red;
+  color: #fff;
+}
