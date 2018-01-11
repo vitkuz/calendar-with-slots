@@ -1,41 +1,43 @@
-var slotObject = {
-  autoshow:true,
+var messages = [
+  {id:0, message: ''}
+]
+
+var controller = {
+  autoshow: true,
   today: returnToday(),
   todayToString: function () {
-    return this.today.day+'/'+this.today.month+'/'+this.today.year
+    return this.today.month + '/' + this.today.day + '/' + this.today.year
   },
   // by default will be selected Today
   selected: {
-    day:returnToday().day,
-    month:returnToday().month,
-    year:returnToday().year,
+    day: returnToday().day,
+    month: returnToday().month,
+    year: returnToday().year,
   },
   selectedToString: function () {
-    return this.today.day+'/'+this.today.month+'/'+this.today.year
+    return this.today.day + '/' + this.today.month + '/' + this.today.year
   },
   dates: []
 };
 
-console.log('today',slotObject.today);
-console.log('todayToString',slotObject.todayToString());
-console.log('selected',slotObject.selected);
-console.log('selectedToString',slotObject.selectedToString());
+console.log('today', controller.today);
+console.log('todayToString', controller.todayToString());
+console.log('selected', controller.selected);
+console.log('selectedToString', controller.selectedToString());
 //-------------------------------------
 //-------------------------------------
 //-------------------------------------
 //-------------------------------------
 //-------------------------------------
 
-
-// createCalenderTable(slotObject.selected.month, slotObject.selected.year);
-// createCalenderRow(slotObject.selected.month, slotObject.selected.year);
-
+// createCalenderTable(controller.selected.month, controller.selected.year);
+// createCalenderRow(controller.selected.month, controller.selected.year);
 
 // var curmonth = parseInt(document.getElementById("ContentPlaceHolder1_lblmonth").innerText);
 // document.getElementById("ContentPlaceHolder1_lblmonthDDD").innerText = convertmonth_ddToDDD(curmonth);
 
-// createCalenderTable(slotObject.today.month, slotObject.today.year);
-createCalenderRow(slotObject.today.month, slotObject.today.year);
+// createCalenderTable(controller.today.month, controller.today.year);
+createCalenderRow(controller.today.month, controller.today.year);
 
 function previous() {
   // var curmonth = parseInt(document.getElementById("ContentPlaceHolder1_lblmonth").innerText);
@@ -141,74 +143,13 @@ function isThisLeapYear(year) {
   }
 }
 
-function createCalenderTable(monthNo, year) {
-  
-  console.log('createCalenderTable ',monthNo, year)
-  
-  var totalDays = getTotalDaysForThismonth(monthNo, year);
-  var firstDateDayNo = getmonthFirstDate_DayNo(monthNo, year);
-  
-  var tableHeader = "<table  style='box-shadow:3px 3px 24px 1px gray' cellPadding='10' border='1px solid black'>";
-  tableHeader += "<tr style='background-color:lightgray;'><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th>" + trEnd;
-  var trStart = "<tr>";
-  var trEnd = "</tr>";
-  var tableEnd = "</table>";
-  var datesInRow = "";
-  var rowContent = "";
-  
-  var i = 1;
-  //alert(totalDays);
-  while (i <= totalDays) {
-    
-    //week
-    rowContent += trStart;
-    for (var j = 0; j <= 6 && i <= totalDays; j++, i++) {
-      
-      while (firstDateDayNo > 0) {
-        rowContent += "<td id='0'></td>";
-        firstDateDayNo--;
-        j++;
-      }
-      
-      var classes ='';
-  
-      if (i === slotObject.selected.day) {
-        classes += 'selected ';
-      }
-  
-      if (i === slotObject.today.day) {
-        classes += 'today ';
-      }
-      
-      var tdDate = {
-        day: i,
-        mount: monthNo,
-        year: year,
-      }
-      
-      rowContent += "<td id='" + i + "' onclick='return selectDate(" + tdDate + ");' class='"+classes+"'>" + i + "</td>";
-    }
-    rowContent += trEnd;
-    //i+=7;
-  }
-  
-  //var tableOuter = "<table><tr><td>"+"</td></tr></table>";
-  document.getElementById("divCal").innerHTML = tableHeader + rowContent + tableEnd;
-  
-  if (slotObject.autoshow) {
-    selectDate(slotObject.selectedToString());
-  }
-}
-
 function createCalenderRow(monthNo, year) {
   
-  console.log('createCalenderRow ', monthNo, year);
-  console.log('selected:', slotObject.selected.month, slotObject.selected.year);
   
   var totalDays = getTotalDaysForThismonth(monthNo, year);
   var firstDateDayNo = getmonthFirstDate_DayNo(monthNo, year);
   
-  console.log('total days = %d, first date= %d',totalDays,firstDateDayNo)
+  console.log('total days = %d, first date= %d', totalDays, firstDateDayNo)
   
   var tableHeader = "<table  style='box-shadow:3px 3px 24px 1px gray' cellPadding='10' border='1px solid black'>";
   
@@ -235,20 +176,20 @@ function createCalenderRow(monthNo, year) {
         firstDateDayNo--;
         j++;
       }
-  
+      
       var classes = '';
       
-      if (i === parseInt(slotObject.selected.day,10)) {
+      if (i === parseInt(controller.selected.day, 10)) {
         classes += 'selected ';
       }
       
-      if (i === parseInt(slotObject.today.day,10)) {
+      if (i === parseInt(controller.today.day, 10)) {
         classes += 'today ';
       }
       
-      var tdDateString = i + '/' + monthNo + '/' +year;
-
-      rowContent += "<td data-date=\""+tdDateString+"\" id='" + i + "' class=\""+classes+"\">" + i + "</td>";
+      var tdDateString = i + '/' + monthNo + '/' + year;
+      
+      rowContent += "<td data-date=\"" + tdDateString + "\" id='" + i + "' class=\"" + classes + "\">" + i + "</td>";
     }
     countRows++;
   }
@@ -265,15 +206,15 @@ function createCalenderRow(monthNo, year) {
 }
 
 function getmonthFirstDate_DayNo(monthNo, year) {
-  monthNo = parseInt(monthNo,10);
-  year = parseInt(year,10);
+  monthNo = parseInt(monthNo, 10);
+  year = parseInt(year, 10);
   var dt = new Date(year, monthNo - 1, 1);
   return dt.getDay();
 }
 
 function getTotalDaysForThismonth(monthNo, year) {
-  monthNo = parseInt(monthNo,10);
-  year = parseInt(year,10);
+  monthNo = parseInt(monthNo, 10);
+  year = parseInt(year, 10);
   switch (monthNo) {
     case 1:
     case 3:
@@ -309,7 +250,7 @@ function getTotalDaysForThismonth(monthNo, year) {
 }
 
 function convertmonth_ddToDDD(thismonth) {
-  var month = parseInt(thismonth,10);
+  var month = parseInt(thismonth, 10);
   
   switch (month) {
     case 1:
@@ -356,7 +297,7 @@ function convertmonth_ddToDDD(thismonth) {
 }
 
 function convertDayNumber_to_dayName(dayNo) {
-  dayNo = parseInt(dayNo,10);
+  dayNo = parseInt(dayNo, 10);
   switch (dayNo) {
     case 0:
       return "Sunday";
@@ -385,146 +326,126 @@ function convertDayNumber_to_dayName(dayNo) {
   }
 }
 
-function giveMeDemoSlotsForThisDay() {
-  var slots = [
-    {
-      id: 1,
-      taken: Math.random() >= 0.5,
-      confirmed: Math.random() >= 0.5
-    },
-    {
-      id: 2,
-      taken: Math.random() >= 0.5,
-      confirmed: Math.random() >= 0.5
-    },
-    {
-      id: 8,
-      taken: Math.random() >= 0.5,
-      confirmed: Math.random() >= 0.5
-    },
-    {
-      id: 9,
-      taken: Math.random() >= 0.5,
-      confirmed: Math.random() >= 0.5
-    },
-    {
-      id: 10,
-      taken: Math.random() >= 0.5,
-      confirmed: Math.random() >= 0.5
-    },
-    {
-      id: 11,
-      taken: Math.random() >= 0.5,
-      confirmed: Math.random() >= 0.5
-      
-    }
-  ]
+function getSlotsForDate(date, renderSlotsFn) {
   
-  return slots;
+  // first step to add gif
+  document.getElementById("result").innerHTML = '<img src="./loading_spinner.gif" />';
+  
+  //todo add ajax request function for date
+  
+  // generate random slots data
+  var demoSlots = [];
+  for (var i = 0; i < 12; i++) {
+    demoSlots.push({id: i, label: i + '00:pm', avalible: Math.random() >= 0.5})
+  }
+  
+  //filter available dates
+  var onlyAvailable = [];
+  for (var i = 0; i < 12; i++) {
+    if (demoSlots[i].avalible === true) {
+      onlyAvailable.push(demoSlots[i]);
+    }
+  }
+  
+  setTimeout(function () {
+    renderSlotsFn(onlyAvailable);
+  }, 1000)
+  
+  // return demoSlots;
 }
 
 function returnToday() {
   var today = new Date();
-  
+  console.log(today, today.getDate(), today.getMonth()+1, today.getFullYear());
   return {
-    day: today.getDay(),
-    month: today.getDate(),
+    month: today.getMonth()+1,
+    day: today.getDate(),
     year: today.getFullYear(),
   }
 }
 
 function selectDate(date) {
   
-  console.log(this.event);
+  var selectedDay,
+      selectedMonth,
+      selectedYear;
   
-  date = date.split('/');
-  var selectedDay = date[0];
-  var selectedMonth = date[1];
-  var selectedYear = date[2];
+  console.log(typeof date);
+  
+  switch (typeof date) {
+    case 'string':
+      date = date.split('/');
+      selectedDay = date[0];
+      selectedMonth = date[1];
+      selectedYear = date[2];
+      break;
+    case 'object':
+      selectedDay = date.day;
+      selectedMonth = date.month;
+      selectedYear = date.year;
+      break;
+    default:
+      throw new Error('unknown format of the date', date);
+  }
   
   var selectedDate = {
-    day:selectedDay,
-    month:selectedMonth,
-    year:selectedYear
+    day: selectedDay,
+    month: selectedMonth,
+    year: selectedYear
   };
   
-  slotObject.selected = selectedDate;
+  controller.selected = selectedDate;
   
-  createCalenderRow(slotObject.selected.month, slotObject.selected.year);
+  document.getElementById("current-date").innerHTML = ' ' +
+      convertDayNumber_to_dayName(new Date(1,0,2018).getDay()) +
+      ' ' +
+      controller.selected.day +
+      ' ' +
+      convertmonth_ddToDDD(controller.selected.month) +
+      ' ';
   
   
-  // todo: wrap below in a function
-  console.log('Asking for slots...',slotObject.selected);
-  console.log('Show spinner');
-  document.getElementById("daySlots").innerHTML = '<img src="./loading_spinner.gif" />';
   
-  fakeAjaxResponce_giveMeAvalibleSlotsFoDate(function () {
-    var fakeAjaxSuccess = {date:slotObject.selected, slots:giveMeDemoSlotsForThisDay()};
-    
-    console.log('Hide spinner and render slots');
-    document.getElementById("daySlots").innerHTML = '';
-    console.log(fakeAjaxSuccess);
-    slotObject.dates.push(fakeAjaxSuccess);
-    renderSlots(fakeAjaxSuccess);
+  createCalenderRow(controller.selected.month, controller.selected.year);
+  
+  getSlotsForDate(controller.selected, function (data) {
+    console.log('print data...', data);
+    document.getElementById("result").innerHTML = tmpl("available-slots", data);
   });
   
-}
-
-function updateSlotObject(selectedDate) {
-  // var curmonth = document.getElementById("ContentPlaceHolder1_lblmonth").innerText;
-  // var curYear = document.getElementById("ContentPlaceHolder1_lblYear").innerText;
+  // todo: wrap below in a function
+  // console.log('Asking for slots...',controller.selected);
+  // console.log('Show spinner');
+  // document.getElementById("daySlots").innerHTML = '<img src="./loading_spinner.gif" />';
   
-  // var curmonth = slotObject.
+  // fakeAjaxResponce_giveMeAvalibleSlotsFoDate(function () {
+  //   var fakeAjaxSuccess = {date:controller.selected, slots:getSlotsForDate()};
   //
-  // slotObject.selected = selectedDate;
-  // slotObject.dates.push({date: selectedDate, slots: giveMeDemoSlotsForThisDay()});
-  // renderSlots(slotObject, selectedDate);
-
-}
-
-function fakeAjaxResponce_giveMeAvalibleSlotsFoDate (cb) {
-  setTimeout(cb, 1000);
+  //   console.log('Hide spinner and render slots');
+  //   document.getElementById("daySlots").innerHTML = '';
+  //   console.log(fakeAjaxSuccess);
+  //   controller.dates.push(fakeAjaxSuccess);
+  //   renderSlots(fakeAjaxSuccess);
+  // });
+  
 }
 
 function reserveSlot(i) {
-  console.log('Send request to reserve slot'+i);
-}
-
-function renderSlots({ date, slots}) {
-  
-  // var day = getDayWithSlots(slotObject.selected);
-  // console.log(day);
-  // var slots = day.slots;
-  //
-  var len = slots.length;
-
-  var slotsStartStr = '<div class="slots">';
-  var slotsStr = '';
-  var slotsEndStr = '</div>';
-
-  for (var i =0; i < len; i++) {
-
-    var clases = slots[i].taken ? 'slot--selected' : 'slot';
-
-    slotsStr += '<div class="'+clases+'" onclick="return reserveSlot(' + i + ');">'+slots[i].id+'</div>';
-  }
-
-  document.getElementById("daySlotsTitle").innerHTML = 'Slots for '+date.day;
-  document.getElementById("daySlots").innerHTML = slotsStartStr + slotsStr + slotsEndStr;
+  console.log('Send request to reserve slot' + i);
 }
 
 document.getElementById("daySlots").addEventListener('click', function (e) {
-
-  if(e.target && e.target.nodeName == "TD") {
-    console.log('td is clicked',e.target);
+  
+  if (e.target && e.target.nodeName == "TD") {
+    console.log('td is clicked', e.target);
   }
   
 });
 
 document.getElementById("rowCal").addEventListener('click', function (e) {
-
-  if(e.target && e.target.nodeName == "TD") {
-    console.log('td is clicked',e.target);
+  
+  if (e.target && e.target.nodeName == "TD") {
+    console.log('td is clicked', e.target);
     selectDate(e.target.getAttribute('data-date'));
   }
   
@@ -532,32 +453,80 @@ document.getElementById("rowCal").addEventListener('click', function (e) {
 
 document.getElementById("nextDay").addEventListener('click', function (e) {
   
-  if(e.target) {
-    // selectDate(e.target.getAttribute('data-date'));
+  console.log('current SELECTED date', controller.selected);
+  
+  controller.selected.day++;
+  
+  if (e.target) {
+    selectDate(controller.selected);
   }
   
 });
 
-document.getElementById("previousDay").addEventListener('click', function (e) {
+document.getElementById("prevDay").addEventListener('click', function (e) {
   
-  if(e.target) {
-    // selectDate(e.target.getAttribute('data-date'));
+  console.log('current SELECTED date', controller.selected);
+  
+  controller.selected.day--;
+  
+  if (e.target) {
+    selectDate(controller.selected);
   }
   
 });
 
+document.getElementById("result").addEventListener('click', function (e) {
+  
+  if (e.target && e.target.nodeName == "SPAN") {
+    console.log('slot selected is clicked', e.target);
+    // selectDate(e.target.getAttribute('data-date'));
+  
+    
+    document.getElementById("messages").innerHTML = 'You\'ve selected ' +
+                                                      controller.selectedToString() +
+                                                      ' <strong>' +
+                                                      e.target.innerHTML +
+                                                      '</strong><br/> Success message goes here';
+    
+  }
+  
+  // send request to reserve slot
+  
+});
 
-var data = {
-  title: "JavaScript Templates",
-  license: {
-    "name": "MIT license",
-    "url": "https://opensource.org/licenses/MIT"
-  },
-  features: [
-    "lightweight & fast",
-    "powerful",
-    "zero dependencies"
-  ]
-};
+getSlotsForDate(controller.today, renderSlots);
 
-document.getElementById("result").innerHTML = tmpl("tmpl-demo", data);
+function renderSlots(slots) {
+  
+  var renderInputs = function () {
+    var str = '';
+    for (var i = 0; i < slots.length; i++) {
+      str += '<label class="timeslot-picker__item">' +
+                '<input class="timeslot-picker__check" type="radio" name="timeslotradio" id="radio1" value="' +
+                  slots[i].id +
+                '" >' +
+                '<span class="timeslot-picker__time">' +
+                  slots[i].label +
+                '</span>' +
+              '</label>'
+    }
+    return str;
+  }
+  
+  var htmlToRender = "<fieldset class=\"timeslot-picker\">" +
+                        "<legend class=\"timeslot-picker__label\">" +
+                          "Choose a time slot" +
+                        "</legend>" +
+                        "<div class=\"timeslot-picker__list\">" +
+                          renderInputs() +
+                        "</div>" +
+                      "</fieldset>";
+  
+  console.log('print data...', slots);
+  document.getElementById("result").innerHTML = htmlToRender;
+  selectFirstAvailableSlot();
+}
+
+function selectFirstAvailableSlot() {
+  document.querySelector("#radio1 + span").click();
+}

@@ -37,9 +37,10 @@
 
 <div class="custom-calendar">
   <h3>Calendar</h3>
+  <div id="current-date"></div>
   <div class="custom-calendar__controls">
-    <a href="#">Previous day</a>
-    <a href="#">Next day</a>
+    <a href="#" id="nextDay">Previous day</a>
+    <a href="#" id="prevDay">Next day</a>
   </div>
   <div id="rowCal">
 
@@ -49,41 +50,17 @@
 
   </div>
 
-  <div class="custom-calendar__slots">
-    <fieldset class="timeslot-picker">
-      <legend class="timeslot-picker__label">Choose a time slot (checkbox)</legend>
-      <div class="timeslot-picker__list">
-        <label class="timeslot-picker__item">
-          <input class="timeslot-picker__check" type="checkbox" id="checkbox1" value="option1">
-          <span class="timeslot-picker__time">09:00am</span>
-        </label>
-        <label class="timeslot-picker__item">
-          <input class="timeslot-picker__check" type="checkbox" id="checkbox2" value="option2">
-          <span class="timeslot-picker__time">10:00am</span>
-        </label>
-        <label class="timeslot-picker__item">
-          <input class="timeslot-picker__check" type="checkbox" id="checkbox3" value="option3">
-          <span class="timeslot-picker__time">11:00am</span>
-        </label>
-        <label class="timeslot-picker__item">
-          <input class="timeslot-picker__check" type="checkbox" id="checkbox4" value="option4">
-          <span class="timeslot-picker__time">12:00pm</span>
-        </label>
-        <label class="timeslot-picker__item">
-          <input class="timeslot-picker__check" type="checkbox" id="checkbox5" value="option5">
-          <span class="timeslot-picker__time">01:00pm</span>
-        </label>
-        <label class="timeslot-picker__item">
-          <input class="timeslot-picker__check" type="checkbox" id="checkbox6" value="option6">
-          <span class="timeslot-picker__time">02:00pm</span>
-        </label>
-      </div>
-    </fieldset>
-  </div>
-
   <div id="result">
 
   </div>
+
+  <div class="calendar__footer">
+    <div id="messages">
+
+    </div>
+    <button id="confirm">Confirm</button>
+  </div>
+
 
 </div>
 
@@ -99,6 +76,22 @@
     {% } %}
   </ul>
 </script>
+
+<script type="text/x-tmpl" id="available-slots">
+    <hr>
+    <fieldset class="timeslot-picker">
+        <legend class="timeslot-picker__label">Choose a time slot (radio)</legend>
+        <div class="timeslot-picker__list">
+          {% for (var i = 0; i < o.length; i++) { %}
+            <label class="timeslot-picker__item">
+              <input class="timeslot-picker__check" type="radio" name="timeslotradio" id="radio1" value="option1" >
+              <span class="timeslot-picker__time">{%= o[i].label %}</span>
+            </label>
+          {% } %}
+        </div>
+    </fieldset>
+</script>
+
 <script src="./tmpl.min.js"></script>
 <script src="./custom_calendar_1.js"></script>
 </body>
