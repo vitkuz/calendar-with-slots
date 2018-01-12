@@ -20,23 +20,12 @@ var controller = {
   dates: []
 };
 
-console.log('today', controller.today);
-console.log('todayToString', controller.todayToString());
-console.log('selected', controller.selected);
-console.log('selectedToString', controller.selectedToString());
 //-------------------------------------
 //-------------------------------------
 //-------------------------------------
 //-------------------------------------
 //-------------------------------------
 
-// createCalenderTable(controller.selected.month, controller.selected.year);
-// createCalenderRow(controller.selected.month, controller.selected.year);
-
-// var curmonth = parseInt(document.getElementById("ContentPlaceHolder1_lblmonth").innerText);
-// document.getElementById("ContentPlaceHolder1_lblmonthDDD").innerText = convertmonth_ddToDDD(curmonth);
-
-// createCalenderTable(controller.today.month, controller.today.year);
 createCalenderRow(controller.today.month, controller.today.year);
 
 function previous() {
@@ -336,13 +325,13 @@ function getSlotsForDate(date, renderSlotsFn) {
   // generate random slots data
   var demoSlots = [];
   for (var i = 0; i < 12; i++) {
-    demoSlots.push({id: i, label: i + '00:pm', avalible: Math.random() >= 0.5})
+    demoSlots.push({id: i, label: i + '00:pm', available: Math.random() >= 0.5})
   }
   
   //filter available dates
   var onlyAvailable = [];
   for (var i = 0; i < 12; i++) {
-    if (demoSlots[i].avalible === true) {
+    if (demoSlots[i].available === true) {
       onlyAvailable.push(demoSlots[i]);
     }
   }
@@ -397,12 +386,13 @@ function selectDate(date) {
   controller.selected = selectedDate;
   
   document.getElementById("current-date").innerHTML = ' ' +
-      convertDayNumber_to_dayName(new Date(1,0,2018).getDay()) +
+      convertDayNumber_to_dayName(new Date(controller.selected.year,controller.selected.month - 1, controller.selected.day).getDay()) +
       ' ' +
       controller.selected.day +
       ' ' +
       convertmonth_ddToDDD(controller.selected.month) +
-      ' ';
+      ' ' +
+      controller.selected.year;
   
   
   

@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+
+  <style>
+    .active {
+      color: red
+    }
+
+    .disable {
+      opacity: .2;
+      pointer-events: none;
+    }
+
+    .controls {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .weekRow > table {
+      width: 100%;
+    }
+
+    .weekRow > table > td {
+      cursor: pointer;
+    }
+
+    .footer {
+      display: flex;
+      justify-content: space-between;
+    }
+
+  </style>
+</head>
+<body>
+<div id="calendar">
+  <div id="controls" class="controls">
+    <div><a href="" id="prev">Prev</a></div>
+    <div><span id="calendar-title"></span></div>
+    <div><a href="" id="next">Next</a></div>
+  </div>
+  <div id="weekRow" class="weekRow">
+
+  </div>
+  <div id="slots" class="slots">
+
+  </div>
+  <div class="footer">
+    <div>
+      <div id="msg">
+        asdasdads
+      </div>
+    </div>
+    <div>
+      <button id="confirm">Confirm</button>
+    </div>
+  </div>
+</div>
+
+
+<script>
+  //converter function
+
+  function convertmonth_ddToDDD(thismonth) {
+    var month = parseInt(thismonth, 10);
+
+    switch (month) {
+      case 0:
+        return "January";
+        break;
+      case 1:
+        return "February";
+        break;
+      case 2:
+        return "March";
+        break;
+      case 3:
+        return "April";
+        break;
+      case 4:
+        return "May";
+        break;
+      case 5:
+        return "June";
+        break;
+      case 6:
+        return "July";
+        break;
+      case 7:
+        return "August";
+        break;
+      case 8:
+        return "September";
+        break;
+      case 9:
+        return "October";
+        break;
+      case 10:
+        return "November";
+        break;
+      case 11:
+        return "December";
+        break;
+
+      default:
+        return "Unknown";
+        break;
+    }
+  }
+
+  function convertDayNumber_to_dayName(dayNo) {
+    dayNo = parseInt(dayNo, 10);
+    switch (dayNo) {
+      case 0:
+        return "Sunday";
+        break;
+      case 1:
+        return "Monday";
+        break;
+      case 2:
+        return "Tuesday";
+        break;
+      case 3:
+        return "Wednesday";
+        break;
+      case 4:
+        return "Thursday";
+        break;
+      case 5:
+        return "Friday";
+        break;
+      case 6:
+        return "Saturday";
+        break;
+      default:
+        return "UnknownDay";
+        break;
+    }
+  }
+
+  function convertSlotNo_to_label(slotNo) {
+    slotNo = parseInt(slotNo, 10);
+    switch (slotNo) {
+      case 0:
+        return "12:00 a.m.";
+        break;
+      case 1:
+        return "1:00 a.m.";
+        break;
+      case 2:
+        return "2:00 a.m.";
+        break;
+      case 3:
+        return "3:00 a.m.";
+        break;
+      case 4:
+        return "4:00 a.m.";
+        break;
+      case 5:
+        return "5:00 a.m.";
+        break;
+      case 6:
+        return "6:00 a.m.";
+        break;
+      case 7:
+        return "7:00 a.m.";
+        break;
+      case 8:
+        return "8:00 a.m.";
+        break;
+      case 9:
+        return "9:00 a.m.";
+        break;
+      case 10:
+        return "10:00 a.m.";
+        break;
+      case 11:
+        return "11:00 a.m.";
+        break;
+      case 12:
+        return "12:00 p.m.";
+        break;
+      case 13:
+        return "1:00 p.m.";
+        break;
+      case 14:
+        return "2:00 p.m.";
+        break;
+      case 15:
+        return "3:00 p.m.";
+        break;
+      case 16:
+        return "4:00 p.m.";
+        break;
+      case 17:
+        return "5:00 p.m.";
+        break;
+      case 18:
+        return "6:00 p.m.";
+        break;
+      case 19:
+        return "7:00 p.m.";
+      case 20:
+        return "8:00 p.m.";
+      case 21:
+        return "9:00 p.m.";
+      case 22:
+        return "10:00 p.m.";
+      case 23:
+        return "11:00 p.m.";
+        break;
+      return "UnknownSlotNo";
+        break;
+    }
+  }
+
+</script>
+
+<script>
+
+  var controller = {}
+
+  controller.today = new Date();
+  controller.selected = new Date();
+
+  var day = controller.today.getDate();
+  var month = controller.today.getMonth();
+  var week = controller.today.getDay(); // ==> 5
+  var year = controller.today.getFullYear();
+
+
+  var CalendarUICtrl = (function() {
+
+    var days = null;
+
+    function printCalendarRow(selected) {
+
+      renderCalendarTitle (selected);
+
+      var diff = selected.getDate() - controller.today.getDate();
+
+      if (diff > 6) {
+        days = _getNext7Days(selected);
+      } else {
+        days = _getNext7Days(controller.today);
+      }
+
+
+      var table = '<table>{{row}}</table>';
+      var th = '<tr>{{cells}}</tr>';
+      var tr = '<tr>{{cells}}</tr>';
+
+      var thtd = '';
+      var trtd = '';
+
+      days.forEach(function (day) {
+        var classes = selected.getDate() === day.getDate() ? 'active' : ''
+
+        thtd += '<td  class="'+ classes +'">'+convertDayNumber_to_dayName(day.getDay())+'</td>';
+        trtd += '<td data-date="'+ day +'" class="'+ classes +'">'+day.getDate()+'</td>';
+      })
+
+      th = th.replace('{{cells}}',thtd);
+
+      tr = tr.replace('{{cells}}',trtd);
+
+      document.getElementById("weekRow").innerHTML = table.replace('{{row}}', th + tr);
+
+    }
+
+    function _getNext7Days(date) {
+      var day = date.getDate();
+      var month = date.getMonth();
+      var week = date.getDay(); // ==> 5
+      var year = date.getFullYear();
+
+      var days = [];
+
+      for (var i = 0 ; i < 7; i++ ) {
+        days.push(new Date(year, month, day+i));
+      }
+
+      return days;
+    }
+
+    function renderCalendarTitle(date) {
+
+      console.log(date);
+
+      var day = date.getDate();
+      var month = date.getMonth();
+      var week = date.getDay(); // ==> 5
+      var year = date.getFullYear();
+
+      document.getElementById("calendar-title").innerHTML = convertDayNumber_to_dayName(week) + ' ' +day + ' ' + convertmonth_ddToDDD(month) + ' ' + year;
+    }
+
+    function renderSelectedDay (date) {
+      console.log(date);
+
+      var day = date.getDate();
+      var month = date.getMonth();
+      var week = date.getDay(); // ==> 5
+      var year = date.getFullYear();
+
+      document.getElementById("msg").innerHTML = convertDayNumber_to_dayName(week) + ' ' +day + ' ' + convertmonth_ddToDDD(month) + ' ' + year;
+    }
+
+    var uiElements = {
+      prev: document.getElementById("prev"),
+      next: document.getElementById("next"),
+      calendarTitle: document.getElementById("calendar-title"),
+      weekRow: document.getElementById("weekRow"),
+      slots: document.getElementById("slots"),
+      confirm: document.getElementById("confirm"),
+    };
+
+    function disableButton (element) {
+      element.classList.add("disable");
+    }
+
+    function enableButton (element) {
+      element.classList.remove("disable");
+    }
+
+    return {
+      printCalendarRow: printCalendarRow,
+      renderCalendarTitle: renderCalendarTitle,
+      renderSelectedDay: renderSelectedDay,
+      uiElements: uiElements,
+      disableButton: disableButton,
+      enableButton: enableButton
+    }
+
+  }());
+
+
+  var CalendarCtrl = (function() {
+
+    var today = new Date();
+    today.setHours(0,0,0,0);
+
+    var selected = new Date();
+    selected.setHours(0,0,0,0);
+
+    var slot;
+
+    function init() {
+      CalendarUICtrl.printCalendarRow(selected);
+
+      CalendarUICtrl.uiElements.next.addEventListener('click', selectNext);
+      CalendarUICtrl.uiElements.prev.addEventListener('click', selectPrev);
+      CalendarUICtrl.uiElements.confirm.addEventListener('click', reserveSlot);
+
+      CalendarUICtrl.uiElements.weekRow.addEventListener('click', function (e) {
+
+        if (e.target && e.target.nodeName == "TD") {
+          selectDay(new Date(e.target.getAttribute('data-date')));
+        }
+
+      });
+
+      CalendarUICtrl.uiElements.slots.addEventListener('change', function (e) {
+
+        console.log('!!!!!!!!!!!!!!!!!', e.target.value);
+
+        if (e.target && e.target.nodeName == "SPAN") {
+          console.log('slot selected is clicked', e.target);
+          selectSlot({date:selected, slot: e.target.getAttribute('data-slot')});
+        }
+      });
+
+      selectDay(today);
+
+    }
+
+    function selectPrev(e) {
+      e.preventDefault();
+      if (e.target) {
+        selected.setDate(selected.getDate() - 1);
+        selectDay(selected);
+      }
+    }
+
+    function selectNext(e) {
+      e.preventDefault();
+      if (e.target) {
+        selected.setDate(selected.getDate() + 1);
+        selectDay(selected);
+
+      }
+    }
+
+    function selectDay (date) {
+
+      if (date <= today) {
+        selected = today;
+        CalendarUICtrl.disableButton(CalendarUICtrl.uiElements.prev);
+      } else if (date > today) {
+        selected = date;
+        CalendarUICtrl.enableButton(CalendarUICtrl.uiElements.prev);
+      }
+
+
+      CalendarUICtrl.printCalendarRow(selected);
+      CalendarUICtrl.renderSelectedDay(selected);
+      getAvailableSlots(selected, renderSlots);
+
+    }
+
+    function getAvailableSlots(date, renderSlotsCallback) {
+
+      var randomTimeResponse = Math.random() * 1000;
+
+      CalendarUICtrl.uiElements.slots.innerHTML = '<img src="./loading_spinner.gif" />';
+
+      setTimeout(function () {
+
+        // generate random slots data
+        var demoSlots = [];
+        for (var i = 0; i < 24; i++) {
+          demoSlots.push({id: i, label: convertSlotNo_to_label(i), available: Math.random() >= 0.5})
+        }
+
+        //filter available dates
+        var onlyAvailable = [];
+        for (var i = 0; i < 24; i++) {
+          if (demoSlots[i].available === true) {
+            onlyAvailable.push(demoSlots[i]);
+          }
+        }
+
+        renderSlotsCallback({date: date, slots: onlyAvailable});
+
+        // return {date: date, slots: demoSlots};
+
+      }, randomTimeResponse);
+    }
+
+    function selectSlot (selectedSlot) {
+      slot = selectedSlot;
+      document.getElementById("msg").innerHTML = '(!) ' + selectedSlot.date.toDateString() + ' ' + convertSlotNo_to_label(selectedSlot.slot);
+    }
+
+    function renderSlots(data) {
+
+      function renderInputs (data) {
+        var str = '';
+        var len = data.slots.length;
+        for (var i = 0; i < len; i++) {
+
+          console.log(data.slots[i].label);
+
+          str += '<label class="timeslot-picker__item">' +
+              '<input class="timeslot-picker__check" type="radio" name="timeslotradio" id="radio1" value="' +
+                data.slots[i].id +
+              '" >' +
+              '<span data-slot="'+ data.slots[i].id +
+              '" class="timeslot-picker__time">' +
+                data.slots[i].label +
+              '</span>' +
+              '</label>'
+        }
+        return str;
+      }
+
+      var htmlToRender = "<fieldset class=\"timeslot-picker\">" +
+          "<legend class=\"timeslot-picker__label\">" +
+          "Choose a time slot" +
+          "</legend>" +
+          "<div class=\"timeslot-picker__list\">" +
+          renderInputs(data) +
+          "</div>" +
+          "</fieldset>";
+
+      CalendarUICtrl.uiElements.slots.innerHTML = htmlToRender;
+    }
+
+    function dateReservationConfirmed(slot) {
+      console.log('dateReservationConfirmed', slot)
+
+    }
+
+    function dateReservationRejected(slot) {
+      console.log('dateReservationFail',slot)
+    }
+
+    function hideCalendar() {
+      document.getElementById("calendar")
+    }
+
+    function showCalendar() {
+      document.getElementById("calendar")
+    }
+
+    function reserveSlot(e) {
+
+      console.log('Confirmed click')
+
+      // put loading spinner
+
+      setTimeout(function () {
+
+        if (Math.random() > .5) {
+          console.log('dateReservationConfirmed', slot)
+          dateReservationConfirmed(slot);
+
+        } else {
+          console.log('dateReservationConfirmed', slot)
+          dateReservationRejected(slot)
+        }
+
+
+      }, 1000)
+
+    }
+
+    init();
+
+
+  }());
+
+</script>
+</body>
+</html>
