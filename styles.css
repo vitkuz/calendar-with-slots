@@ -43,3 +43,82 @@ td.selected {
   padding: 10px;
   border:1px solid
 }
+
+
+.active {
+  color: red
+}
+
+.disable {
+  opacity: .2;
+  pointer-events: none;
+}
+
+.controls {
+  display: flex;
+  justify-content: space-between;
+}
+
+.weekRow > table {
+  width: 100%;
+}
+
+.weekRow > table > td {
+  cursor: pointer;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+}
+
+#calendar {
+  display: none;
+}
+
+#calendar.open {
+  display: block;
+}
+
+.error {
+  color: red;
+}
+
+.info {
+  color: blue;
+}
+
+.success {
+  color: green;
+}
+
+.warning {
+  color: orange;
+}
+
+#calendar {
+  width: 50%;
+  background: #f3f3f3;
+  margin: auto;
+}
+
+.btn {
+  border: 1px solid #000;
+  background: #fff;
+  padding:3px ;
+}
+.btn.disable {
+  opacity: .3;
+}
+
+.slots-container {
+  /*display: none;*/
+  opacity:0.3;
+}
+
+.slots-container--active {
+  border:1px solid #007b85;
+  display: block;
+  opacity: 1;
+}
+
