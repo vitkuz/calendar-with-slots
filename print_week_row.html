@@ -7,40 +7,45 @@
 
 </head>
 <body>
-<div id="calendar">
-  <div id="controls" class="controls">
-    <div><a href="" id="prev" class="btn calendar__prev">Prev</a></div>
-    <div><span id="calendar-title" class="calendar__title"></span></div>
-    <div><a href="" id="next" class="btn calendar__next">Next</a></div>
-  </div>
-  <div id="weekRow" class="weekRow">
-
-  </div>
-  <hr>
-  <div id="slots" class="slots">
-
-  </div>
-  <div class="footer">
-    <div>
+<div id="calendar" class="calendar">
+  <div id='calendarHeader' class="calendar__header">
+    <div id="controls" class="calendar__controls">
+      <div><a href="" id="prev" class="btn calendar__prev">Prev</a></div>
+      <div><span id="calendar-title" class="calendar__title"></span></div>
+      <div><a href="" id="next" class="btn calendar__next">Next</a></div>
     </div>
-    <div>
-      <button id="confirm">Reserve slot</button>
-      <button id="toggle-calendar">Show/Hide</button>
+    <div id="weekRow" class="weekRow">
+
+    </div>
+    <hr>
+    <div id="slots" class="calendar__slots">
+
     </div>
   </div>
+  <div class="calendar__footer">
+    <button id="confirm" class="btn calendar__reserve">Reserve slot</button>
+    <button id="change-reservation" class="btn calendar__showhide">Change reservation</button>
+  </div>
 
+  <div id="result">
+    <div id="msg">
+      Some message goes here
+    </div>
+  </div>
 
 </div>
 
-<div id="msg">
-  Some message goes here
-</div>
+
 
 <div class="test">
   <button id="hide-calendar">Hide</button>
-  <button id="show-calendar">Show calendar</button>
+  <button id="show-calendar">Init calendar on the page</button>
 </div>
 
+<script
+        src="https://code.jquery.com/jquery-2.2.4.js"
+        integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI="
+        crossorigin="anonymous"></script>
 <script src="./my-calendar.js"></script>
 </body>
 </html>

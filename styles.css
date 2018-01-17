@@ -50,7 +50,7 @@ td.selected {
 }
 
 .disable {
-  opacity: .2;
+  opacity: .1;
   pointer-events: none;
 }
 
@@ -72,13 +72,6 @@ td.selected {
   justify-content: space-between;
 }
 
-#calendar {
-  display: none;
-}
-
-#calendar.open {
-  display: block;
-}
 
 .error {
   color: red;
@@ -106,6 +99,8 @@ td.selected {
   border: 1px solid #000;
   background: #fff;
   padding:3px ;
+  border-radius: 4px;
+  display: inline-block;
 }
 .btn.disable {
   opacity: .3;
@@ -122,3 +117,63 @@ td.selected {
   opacity: 1;
 }
 
+.calendar {
+  padding:5px;
+}
+
+.calendar__controls {
+  display: flex;
+  margin-bottom:1rem;
+  justify-content: space-between;
+}
+
+.calendar__slots {
+  height:250px;
+  overflow-y: scroll;
+}
+
+.table td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.hidden {
+  display: none;
+}
+
+.shown {
+  display: block;
+}
+
+.disabled {
+  color: #ccc;
+}
+
+.active.disabled {
+  font-weight: bold;
+}
+
+.calendar {
+  text-align: center;
+}
+
+.calendar__header {
+  display: flex;
+  margin-bottom:1rem;
+  justify-content: space-between;
+}
+
+.calendar__days {
+  display: flex;
+  margin-bottom:1rem;
+  justify-content: space-between;
+}
+
+.calendar__slots {
+  height:250px;
+  overflow-y: scroll;
+}
+
+.calendar__slots-container {
+
+}

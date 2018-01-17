@@ -1,5 +1,4 @@
 //converter function
-
 function convertmonth_ddToDDD(thismonth) {
   var month = parseInt(thismonth, 10);
   
@@ -183,19 +182,251 @@ function convertSlotNo_to_label(slotNo) {
   }
 }
 
-var controller = {
-  firstSlot: true,
-  today: new Date(),
-  selectedDay: new Date(),
-  selectedSlot: null,
-  days: null,
-  messages: []
+function convertDateToString(date) {
+  
+  var day = date.getDate();
+  var month = date.getMonth();
+  var week = date.getDay();
+  var year = date.getFullYear();
+  
+  return convertDayNumber_to_dayName(week) + ' ' + day + ' ' + convertmonth_ddToDDD(month) + ' ' + year;
+  
 }
 
-var day = controller.today.getDate();
-var month = controller.today.getMonth();
-var week = controller.today.getDay(); // ==> 5
-var year = controller.today.getFullYear();
+//----------------------------------------------
+
+var EE = EE || {};
+
+EE.slotsCalendar = (function(window, $) {
+  
+  var today = new Date();
+  today.setHours(0, 0, 0, 0);
+  
+  var selected = new Date();
+  selected.setHours(0, 0, 0, 0);
+  
+  var min = new Date();
+  min.setHours(0, 0, 0, 0);
+  
+  var max = new Date();
+  max.setHours(0, 0, 0, 0);
+  max.setDate(max.getDate()+6);
+  
+  var state = {
+    errorThreshold:3,
+    errorCount:0,
+    days: null,
+    today: today,
+    selected: selected,
+    min: min,
+    max: max,
+  };
+  
+  function selectDay(elem) {
+    
+    console.log(elem);
+  
+    state.days.forEach(function (day) {
+
+      if ('day-' + newDate(day.date).getDate() === elem) {
+        document.getElementById(elem).classList.add('calendar__slot-container--active')
+      } else {
+        document.getElementById('day-' + day.date.getDate()).classList.remove('calendar__slot-container--active');
+      }
+
+    });
+    
+  }
+  
+  function selectSlot(elem) {
+  
+    console.log(elem);
+    
+  }
+  
+  function renderSlots(slots) {
+    
+    var template = '<fieldset class="timeslot-picker"><legend class="timeslot-picker__label">Choose a time slot</legend><div class="timeslot-picker__list">{{slots}}</div></fieldset>';
+    
+    var slotsStr = '';
+    var len = slots.length;
+    
+    if (len > 0) {
+      for (var i = 0; i < len; i++) {
+        
+        //var checked = state.selectedSlot.date === slots[i].date && state.selectedSlot.slotId === slots[i].id ? 'checked' : '';
+        
+        var checked = '';
+        
+        if (state.selectedSlot) {
+          if (state.selectedSlot.date.getDate() === slots[i].date.getDate()) {
+            if (state.selectedSlot.slotId == slots[i].slotId) {
+              checked = 'checked';
+            }
+          }
+        }
+        
+        slotsStr += '<label class="timeslot-picker__item">' +
+            '<input data-date="'+slots[i].date+'" class="timeslot-picker__check" type="radio" name="timeslotradio" id="radio-' + slots[i].slotId + '" value="' +
+            slots[i].slotId +
+            '" '+ checked +'>' +
+            '<span data-slot="' + slots[i].slotId +
+            '" class="timeslot-picker__time">' +
+            slots[i].label +
+            '</span>' +
+            '</label>';
+      }
+    } else {
+      slotsStr += '<div>No slots in this day</div>'
+    }
+    
+    return template.replace('{{slots}}', slotsStr);
+  }
+  
+  function renderCalendar(date) {
+    
+    var selectedDay = date || today;
+    // selectedDay.setHours(0,0,0,0);
+    
+    var calendarTitleStr = convertDateToString(selectedDay);
+    
+    var calendarPrevBtn = '<div><a href="#" id="calendar-prev" class="">Prev</a></div>';
+    var calendarNextBtn = '<div><a href="#" id="calendar-next" class="">Next</a></div>';
+    var calendarTitle = '<div>' + calendarTitleStr + '</div>';
+  
+    var calendarHeader = '<div class="calendar__header">' + calendarPrevBtn + calendarTitle + calendarNextBtn + '</div>';
+  
+    document.getElementById('calendar').innerHTML = calendarHeader;
+    
+    var calendarDates = '<div class="calendar__days">{{days}}</div>';
+    var days = '';
+    
+    state.days.forEach(function (day) {
+      console.log(day);
+      
+      var classes = '';
+      classes += selectedDay.getDate() === new Date(day.date).getDate() ? 'active ' : '';
+  
+      if (day.slots.length === 0) {
+        classes += 'disabled '
+      }
+  
+      days += '<div><div class="'+classes+'">'+ convertDayNumber_to_shortDayName(new Date(day.date).getDay()) +'</div><div class="'+classes+'" id="day-'+new Date(day.date).getDate()+'">'+ new Date(day.date).getDate() +'</div></div>'
+      
+      console.log(day);
+    })
+  
+    calendarDates = calendarDates.replace('{{days}}', days);
+  
+    var calendarSlots = '<div class="calendar__slots">{{slots}}</div>';
+    var slots = '';
+    
+    state.days.forEach(function (day) {
+      slots += '<div class="calendar__slots-container" id="slots-'+ new Date(day.date).getDate() +'">'+renderSlots(day.slots)+'</div>';
+    });
+  
+    calendarSlots = calendarSlots.replace('{{slots}}', slots);
+    
+    document.getElementById('calendar').innerHTML = calendarHeader + calendarDates + calendarSlots;
+  }
+  
+  function renderTimeoutError() {
+    document.getElementById('calendar').innerHTML = '<div>Timeout. Please retry <br/><a href="#" id="calendar-retry">> Do again</a></div>'
+  }
+  
+  function renderAPIError() {
+    document.getElementById('calendar').innerHTML = '<div>We cant give you slot due to API error <br/><a href="#" id="calendar-reload">> Reload calendar</a></div>'
+  }
+  
+  function retry() {
+    getData()
+  }
+  
+  function getData() {
+    
+    document.getElementById('calendar').innerHTML = '<img src="./loading_spinner.gif" />';
+    
+    $.ajax({
+      url: 'http://localhost:5000/slots',
+      timeout: 2000 //2 second timeout
+    }).done(function(data){
+      
+      state.days = data;
+      renderCalendar();
+      
+    }).fail(function(jqXHR, textStatus){
+      
+      if(textStatus === 'timeout')
+      {
+        if (state.errorCount > state.errorThreshold) {
+          renderAPIError()
+        } else {
+          state.errorCount ++;
+          console.log('Timeout error happened:', state.errorCount);
+          renderTimeoutError()
+        }
+
+      } else {
+        console.log('Cant reach API:', textStatus);
+        renderAPIError()
+      }
+      
+    })
+    
+  }
+  
+  function init(options) {
+    
+    document.getElementById('calendar').addEventListener('click',function (e) {
+      console.log(e.target.getAttribute('id'));
+      
+      var buttonClicked = e.target.getAttribute('id');
+      
+      if (!buttonClicked) return;
+      
+      console.log(buttonClicked.search(/day/));
+      console.log(buttonClicked.search(/slot/));
+      
+      if ( buttonClicked === 'calendar-retry') {
+        retry();
+      } else if (buttonClicked === 'calendar-reload') {
+        retry();
+      } else if (buttonClicked.search(/day/) === 0) {
+        
+        selectDay(buttonClicked);
+        // console.log('Select day',buttonClicked)
+      } else if (buttonClicked.search(/slot/) === 0) {
+        
+        selectSlot(buttonClicked);
+        // console.log('Select slot',buttonClicked)
+      }
+      
+    });
+    
+    getData(function(data) {
+      console.log(data);
+    });
+    
+    return {
+      name: options.name,
+      ajaxUrl: '',
+      delay: '',
+      errorCount: 0,
+      retry: retry
+    }
+  }
+  
+  return init;
+  
+}(window, jQuery));
+
+var calendar1 = EE.slotsCalendar({
+  name:1
+});
+
+console.log(calendar1)
+
+
 
 var CalendarCtrl = (function () {
   
@@ -205,9 +436,18 @@ var CalendarCtrl = (function () {
   var selected = new Date();
   selected.setHours(0, 0, 0, 0);
   
+  var min = new Date();
+  min.setHours(0, 0, 0, 0);
+  
+  var max = new Date();
+  max.setHours(0, 0, 0, 0);
+  max.setDate(max.getDate()+6);
+  
   var state = {
     selectFirstSlot: true,
     today: today,
+    min:min,
+    max:max,
     selectedDay: selected,
     selectedSlot: null,
     days: null,
@@ -229,48 +469,20 @@ var CalendarCtrl = (function () {
     confirm: document.getElementById("confirm"),
     hideCalendarBtn: document.getElementById("hide-calendar"),
     showCalendarBtn: document.getElementById("show-calendar"),
-    toggleCalendarBtn: document.getElementById("toggle-calendar"),
+    change: document.getElementById("change-reservation"),
+    calendarHeader: document.getElementById("calendarHeader"),
   };
   
   function init() {
     
-    // Step 1: Show loading gif and ask for available slots for next 7 days
     uiElements.weekRow.innerHTML = '<img src="./loading_spinner.gif" />';
     
-    //Step 2: Generate
     getAvailableSlots(function (days) {
       state.days = days;
       printCalendarRow();
       attachEventListeners();
-      
+      selectFirstAvailableSlot();
     });
-    
-    // printCalendarRow(selected);
-    //
-    // uiElements.next.addEventListener('click', selectNext);
-    // uiElements.prev.addEventListener('click', selectPrev);
-    // uiElements.confirm.addEventListener('click', reserveSlot);
-    //
-    // uiElements.hideCalendarBtn.addEventListener('click', hideCalendar);
-    // uiElements.showCalendarBtn.addEventListener('click', showCalendar);
-    // uiElements.toggleCalendarBtn.addEventListener('click', toggleCalendar);
-    //
-    // uiElements.weekRow.addEventListener('click', function (e) {
-    //
-    //   if (e.target && e.target.nodeName == "TD") {
-    //     selectDay(new Date(e.target.getAttribute('data-date')));
-    //   }
-    //
-    // });
-    //
-    // uiElements.slots.addEventListener('change', function (e) {
-    //
-    //   if (e.target) {
-    //     selectSlot({date:selected, slot: e.target.value});
-    //   }
-    // });
-    //
-    // selectDay(today);
     
   }
   
@@ -294,6 +506,9 @@ var CalendarCtrl = (function () {
       }
     });
     
+    uiElements.change.addEventListener('click', showCalendar);
+    uiElements.confirm.addEventListener('click', reserveSlot);
+    
   }
   
   function printCalendarRow() {
@@ -301,8 +516,6 @@ var CalendarCtrl = (function () {
     renderCalendarTitle(state.selectedDay);
     
     var diff = state.selectedDay.getDate() - state.today.getDate();
-    
-    console.log('DIFFFFFFF', diff);
     
     if (diff > 5) {
       disableButton(uiElements.next);
@@ -323,7 +536,11 @@ var CalendarCtrl = (function () {
     var trtd = '';
     
     state.days.forEach(function (day) {
-      var classes = state.selectedDay.getDate() === day.date.getDate() ? 'active' : '';
+      var classes = state.selectedDay.getDate() === day.date.getDate() ? 'active ' : '';
+      
+      if (day.slots.length === 0) {
+        classes += 'disabled '
+      }
       
       thtd += '<td  class="' + classes + '">' + convertDayNumber_to_shortDayName(day.date.getDay()) + '</td>';
       trtd += '<td data-date="' + day.date + '" class="' + classes + '">' + day.date.getDate() + '</td>';
@@ -372,10 +589,20 @@ var CalendarCtrl = (function () {
     
     var day = state.selectedDay.getDate();
     var month = state.selectedDay.getMonth();
-    var week = state.selectedDay.getDay(); // ==> 5
+    var week = state.selectedDay.getDay();
     var year = state.selectedDay.getFullYear();
     
     document.getElementById("calendar-title").innerHTML = convertDayNumber_to_dayName(week) + ' ' + day + ' ' + convertmonth_ddToDDD(month) + ' ' + year;
+  }
+  
+  function dateToFormatedString(date) {
+    
+    var day = date.getDate();
+    var month = date.getMonth();
+    var week = date.getDay();
+    var year = date.getFullYear();
+    
+    return convertDayNumber_to_dayName(week) + ' ' + day + ' ' + convertmonth_ddToDDD(month) + ' ' + year;
   }
   
   function disableButton(element) {
@@ -405,36 +632,34 @@ var CalendarCtrl = (function () {
   
   function hideCalendar() {
     console.log('Hide calendar');
-    document.getElementById('calendar').classList.remove('open');
+    uiElements.calendarHeader.classList.add('hidden');
   }
   
   function showCalendar() {
     console.log('Show calendar');
-    document.getElementById('calendar').classList.add('open');
+    uiElements.calendarHeader.classList.remove('hidden');
   }
   
   function toggleCalendar() {
     console.log('Toggle calendar');
-    document.getElementById('calendar').classList.toggle('open');
+    uiElements.calendarHeader.classList.toggle('hidden');
   }
   
   function selectDay(date) {
     
-    if (date <= today) {
-      date = today;
-      disableButton(uiElements.prev);
-    } else if (date > today) {
-      enableButton(uiElements.prev);
+    if (date < state.min) {
+      state.selectedDay = state.min;
+    } else if (date > state.max) {
+      state.selectedDay = state.max;
+    } else {
+      state.selectedDay = date;
     }
-    
-    state.selectedDay = date;
     
     renderMessage(3, state.selectedDay);
     
     printCalendarRow();
-    // renderSelectedDay(selected);
     selectSlotsContainer('day-' + state.selectedDay.getDate());
-    // getAvailableSlots(selected, renderSlots);
+
     
   }
   
@@ -459,12 +684,17 @@ var CalendarCtrl = (function () {
           demoSlots.push({date: new Date(year, month, day + d), slotId: i, label: convertSlotNo_to_label(i), available: Math.random() >= 0.5})
         }
         
-        //filter available dates
+        if (Math.random() >= 0.5) {
+          demoSlots = [];
+        }
         
+        //filter available dates
         var onlyAvailable = [];
-        for (var i = 0; i < 24; i++) {
-          if (demoSlots[i].available === true) {
-            onlyAvailable.push(demoSlots[i]);
+        if (demoSlots.length > 0) {
+          for (var i = 0; i < 24; i++) {
+            if (demoSlots[i].available === true) {
+              onlyAvailable.push(demoSlots[i]);
+            }
           }
         }
         
@@ -477,99 +707,106 @@ var CalendarCtrl = (function () {
   }
   
   function selectSlot(selectedSlot) {
-    console.log(selectedSlot);
     state.selectedSlot = selectedSlot;
-    renderMessage(4, controller.selectedSlot);
+    renderMessage(4);
   }
   
   function renderSlots(slots) {
-    
-    console.log('try to render', slots);
     
     var template = '<fieldset class="timeslot-picker"><legend class="timeslot-picker__label">Choose a time slot</legend><div class="timeslot-picker__list">{{slots}}</div></fieldset>';
     
     var slotsStr = '';
     var len = slots.length;
     
-    for (var i = 0; i < len; i++) {
-      
-      //var checked = state.selectedSlot.date === slots[i].date && state.selectedSlot.slotId === slots[i].id ? 'checked' : '';
-  
-      var checked = '';
-      
-      if (state.selectedSlot) {
-        if (state.selectedSlot.date.getDate() === slots[i].date.getDate()) {
-          if (state.selectedSlot.slotId == slots[i].slotId) {
-            checked = 'checked';
+    if (len > 0) {
+      for (var i = 0; i < len; i++) {
+    
+        //var checked = state.selectedSlot.date === slots[i].date && state.selectedSlot.slotId === slots[i].id ? 'checked' : '';
+    
+        var checked = '';
+    
+        if (state.selectedSlot) {
+          if (state.selectedSlot.date.getDate() === slots[i].date.getDate()) {
+            if (state.selectedSlot.slotId == slots[i].slotId) {
+              checked = 'checked';
+            }
           }
         }
+    
+        slotsStr += '<label class="timeslot-picker__item">' +
+            '<input data-date="'+slots[i].date+'" class="timeslot-picker__check" type="radio" name="timeslotradio" id="radio-' + slots[i].slotId + '" value="' +
+            slots[i].slotId +
+            '" '+ checked +'>' +
+            '<span data-slot="' + slots[i].slotId +
+            '" class="timeslot-picker__time">' +
+            slots[i].label +
+            '</span>' +
+            '</label>';
       }
-      
-      slotsStr += '<label class="timeslot-picker__item">' +
-          '<input data-date="'+slots[i].date+'" class="timeslot-picker__check" type="radio" name="timeslotradio" id="radio-' + slots[i].slotId + '" value="' +
-          slots[i].slotId +
-          '" '+ checked +'>' +
-          '<span data-slot="' + slots[i].slotId +
-          '" class="timeslot-picker__time">' +
-          slots[i].label +
-          '</span>' +
-          '</label>';
+    } else {
+      slotsStr += '<div>No slots in this day</div>'
     }
     
-    // uiElements.slots.innerHTML = template.replace('{{slots}}', slots);
+   
     
     return template.replace('{{slots}}', slotsStr);
-    
-    // slotsAreRendered();
   }
   
-  // function slotsAreRendered() {
-  //
-  //   if (controller.firstSlot) {
-  //     // select first available slot onece
-  //     document.querySelectorAll(".timeslot-picker__item > input")[0].click();
-  //     controller.firstSlot = false;
-  //   }
-  //
-  // }
   
-  function dateReservationConfirmed(slot) {
+  function dateReservationConfirmed() {
     console.log('dateReservationConfirmed', state.selectedSlot);
     renderMessage(1);
     hideCalendar();
     // showChangeButton();
   }
   
-  function dateReservationRejected(slot) {
+  function dateReservationRejected() {
     console.log('dateReservationFail', state.selectedSlot);
+
+    
     renderMessage(2);
+  
+    getAvailableSlots(function (days) {
+      state.selectedSlot = null;
+      state.days = days;
+      printCalendarRow();
+      attachEventListeners();
+      selectFirstAvailableSlot();
+    });
+  }
+  
+  function selectFirstAvailableSlot() {
+    
+    for (var i=0; i < state.days.length; i++) {
+      if (state.days[i].slots.length > 0) {
+        selectSlot(state.days[i].slots[0]);
+        break;
+      }
+    }
+    
   }
   
   function renderMessage(msgId, data) {
     
-    var msg;
-    
-    console.log(data);
+    var msg ='';
     
     switch (msgId) {
       case 1:
-        msg = '<div class="success">It is ok, slot with this date reserved</div>';
+        msg += '<div class="success">Slot with this date reserved!</div>';
         break;
       case 2:
-        msg = '<div class="error">You cant reserved this slot, try another one</div>';
+        msg += '<div class="error">This slot is no longer available. Try different one</div>';
         break;
       case 3:
-        msg = '<div class="info">Wait, slots are loading for' + data + '</div>';
+        msg += '<div class="info">Day: ' + dateToFormatedString(state.selectedDay) + '</div>';
         break;
       case 4:
-        msg = '<div class="info">You\'ve selected' + state.selectedSlot + ' ' + convertSlotNo_to_label(state.selectedSlot.id) + '</div>';
+        msg += '<div class="info">Slot: ' + dateToFormatedString(state.selectedSlot.date) + ' ' + convertSlotNo_to_label(state.selectedSlot.slotId) + '</div>';
         break;
       case 5:
-        msg = '<div class="warning">Confirmation request is sent</div>';
+        msg += '<div class="warning">Confirmation request is sent</div>';
         break;
     }
-    
-    console.log(msg);
     
     document.getElementById("msg").innerHTML = msg;
   }
@@ -591,10 +828,7 @@ var CalendarCtrl = (function () {
       } else {
         console.log('dateReservationRejected', state.selectedSlot);
         dateReservationRejected(state.selectedSlot);
-        getAvailableSlots(function (days) {
-          state.selectedSlot = days;
-          printCalendarRow();
-        });
+        
       }
       
     }, 5000)
@@ -610,6 +844,5 @@ var CalendarCtrl = (function () {
 }());
 
 document.getElementById("show-calendar").addEventListener('click', function (e) {
-  document.getElementById('calendar').classList.add('open');
   CalendarCtrl.init();
 })
