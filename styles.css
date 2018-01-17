@@ -175,5 +175,11 @@ td.selected {
 }
 
 .calendar__slots-container {
+  display: none;
+  /*opacity:0.1;*/
+}
 
+.calendar__slot-container--active {
+  display: block;
+  border:1px solid #000;
 }

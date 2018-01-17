@@ -228,10 +228,10 @@ EE.slotsCalendar = (function(window, $) {
   
     state.days.forEach(function (day) {
 
-      if ('day-' + newDate(day.date).getDate() === elem) {
-        document.getElementById(elem).classList.add('calendar__slot-container--active')
+      if ('day-' + new Date(day.date).getDate() === elem) {
+        document.getElementById('slots-'+new Date(day.date).getDate()).classList.add('calendar__slot-container--active')
       } else {
-        document.getElementById('day-' + day.date.getDate()).classList.remove('calendar__slot-container--active');
+        document.getElementById('slots-'+new Date(day.date).getDate()).classList.remove('calendar__slot-container--active');
       }
 
     });
