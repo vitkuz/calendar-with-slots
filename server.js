@@ -209,7 +209,7 @@ app.use(cookieParser());
 
 app.use('/slots', (req,res,next) => {
   
-  var randomTimeResponse = Math.random() * 5000;
+  var randomTimeResponse = Math.random() * 1000;
   var response = [];
   
   setTimeout(function () {

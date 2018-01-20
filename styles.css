@@ -37,6 +37,7 @@ td.selected {
 
 .calendar__footer {
   display: flex;
+  justify-content: space-between;
 }
 
 #messages {
@@ -182,4 +183,34 @@ td.selected {
 .calendar__slot-container--active {
   display: block;
   border:1px solid #000;
+}
+
+.calendar__week-day-number {
+  cursor:pointer;
+}
+
+.calendar__week-day-number--today {
+  color: green;
+  cursor:pointer;
+}
+
+.calendar__week-day-number--selected {
+  color: red;
+}
+
+.calendar__week-day-number--disabled {
+  opacity:0.2;
+}
+
+.calendar__btn--disabled {
+  pointer-events: none;
+  opacity: 0.05;
+}
+
+.open {
+  display: block;
+}
+
+.close {
+  display: none;
 }
