@@ -3,38 +3,73 @@
 <head>
   <meta charset="UTF-8">
   <title>Title</title>
+  <link rel="stylesheet" href="font-awesome-4.7.0/css/font-awesome.css">
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="styleguide.css">
 </head>
 <body>
-<div id="calendar" class="calendar">
-  <div id='calendarHeader' class="calendar__header">
-    <div id="controls" class="calendar__controls">
-      <div><a href="" id="prev" class="calendar__btn calendar__prev">Prev</a></div>
-      <div><span id="calendar-title" class="calendar__title"></span></div>
-      <div><a href="" id="next" class="btn calendar__next">Next</a></div>
-    </div>
-    <div id="weekRow" class="weekRow">
 
+<div class="form-container">
+  <div class="standart-delivery-container">
+    <label for="select-standart-delivery-cbx">
+      <input type="radio" id="select-standart-delivery-cbx" name="delivery-method">
+      Standart delivery (i)
+      <span class="icon"></span>
+    </label>
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis consectetur consequuntur corporis cum delectus ea expedita iure laboriosam maxime nam neque, nobis nostrum obcaecati odit optio quod ratione sequi voluptates!
+    </p>
+  </div>
+
+
+  <div class="express-delivery-container">
+    <div style="padding: 16px;">
+      <label for="select-express-delivery-cbx">
+        <input type="radio" id="select-express-delivery-cbx" name="express-delivery">
+        Express delivery (i)
+        <span class="icon"></span>
+      </label>
+      <p>
+        Delivered to your home, work or location of your choice. Selected postcodes only.
+      </p>
     </div>
-    <hr>
-    <div id="slots" class="calendar__slots">
+
+    <div id="calendar" class="calendar">
 
     </div>
   </div>
-  <div class="calendar__footer">
-    <button id="confirm" class="btn calendar__reserve">Reserve slot</button>
-    <button id="change-reservation" class="btn calendar__showhide">Change reservation</button>
+</div>
+
+
+
+
+<div class="ed-messages">
+  <div id="ed-messages-loading">
+    Loading delivery times...
+  </div>
+  <div id="ed-messages-error">
+    Sorry, there was an error loading the delivery dates and times.
+    <a href="#" id="action-reload">Refresh the page</a>
   </div>
 
-  <div id="result">
-    <div id="msg">
-      Some message goes here
-    </div>
+  <div id="ed-messages-retry">
+    Sorry, we seem to heave encountered some technical problem to find any appointments.
+    <a href="#" id="action-retry">Retry</a>
+  </div>
+
+  <div id="ed-messages-slot-is-no-longer-unavailable">
+    Oops, {{slot}} slot is no longer available. Please try a different time.
+  </div>
+
+  <div id="ed-messages-address-not-eligible">
+    This service is only available to selected London postcodes at th moment. We're rolling out to other areas soon, but in the meanwhile enter a London location you know well to see if it's eligible.
+  </div>
+
+  <div id="ed-messages-all-slots-are-booked">
+    Sorry, we're out of slots for the next seven days. Please use standart delivery.
   </div>
 
 </div>
-
 
 
 <div class="test">

@@ -350,8 +350,8 @@ EE.slotsCalendar = (function(window, $) {
     
     var calendarTitleStr = convertDateToString(selectedDay);
     
-    var calendarPrevBtn = '<div><a href="#" id="calendar-prev" class="calendar__btn '+prevBtnClasses+'">Prev</a></div>';
-    var calendarNextBtn = '<div><a href="#" id="calendar-next" class="calendar__btn '+nextBtnClasses+'">Next</a></div>';
+    var calendarPrevBtn = '<div><a href="#" class="calendar__prev-btn '+prevBtnClasses+'"><span aria-hidden="true" id="calendar-prev" class="ee-icon-chevronback"></span></a></div>';
+    var calendarNextBtn = '<div><a href="#" class="calendar__next-btn '+nextBtnClasses+'"><span aria-hidden="true" id="calendar-next" class="ee-icon-chevronnext"></span></a></div>';
     var calendarTitle = '<div>' + calendarTitleStr + '</div>';
   
     var calendarHeader = '<div class="calendar__header">' + calendarPrevBtn + calendarTitle + calendarNextBtn + '</div>';
@@ -364,21 +364,26 @@ EE.slotsCalendar = (function(window, $) {
     state.days.forEach(function (day) {
       console.log(day);
       
-      var classes = '';
+      var classesForWeekNames = '';
+      var classesForDays = '';
   
       if (state.today.getDate() === new Date(day.date).getDate()) {
-        classes += 'calendar__slot-container--today ';
+        classesForWeekNames += 'calendar__slot-container--today ';
+        classesForDays += 'calendar__slot-container--today ';
       }
-      
-      classes += selectedDay.getDate() === new Date(day.date).getDate() ? 'calendar__week-day-number--selected ' : '';
+  
+      classesForWeekNames += selectedDay.getDate() === new Date(day.date).getDate() ? 'calendar__week-name--selected ' : '';
+      classesForDays += selectedDay.getDate() === new Date(day.date).getDate() ? 'calendar__week-day-number--selected ' : '';
   
       if (day.slots.length === 0) {
-        classes += 'calendar__week-day-number--disabled '
+        classesForWeekNames += 'calendar__week-name--disabled ';
+        classesForDays += 'calendar__week-day-number--disabled ';
       }
   
-      days += '<div><div class="calendar__week-day-name '+classes+'">' +
+      days += '<div><div class="calendar__week-name ' + classesForWeekNames+'">' +
           convertDayNumber_to_shortDayName(new Date(day.date).getDay()) +
-          '</div><div data-date="'+ new Date(day.date) +'" class="calendar__week-day-number '+classes+'" id="day-' + new Date(day.date).getDate() + '">'+
+          '</div><div data-date="'+ new Date(day.date) +'" class="calendar__week-day-number '+classesForDays +
+          '" id="day-' + new Date(day.date).getDate() + '">'+
           new Date(day.date).getDate() +'</div></div>'
       
     })
@@ -402,8 +407,6 @@ EE.slotsCalendar = (function(window, $) {
     calendarSlots = calendarSlots.replace('{{slots}}', slots);
     
     
-    
-    
     var calendarFooter = '<div class="calendar__footer">' +
         '<div id="messages" class="calendar__messages">{{messages}}</div>' +
         '<div>{{buttons}}</div></div>';
@@ -413,18 +416,18 @@ EE.slotsCalendar = (function(window, $) {
     if (state.confirmedSlot && state.selectedSlot) {
       state.messages.push('<div class="info">New selected slot ' + convertDateToString(state.selectedSlot.date) + ' ' + convertSlotNo_to_label(state.selectedSlot.slotId) +'</div>')
       state.messages.push('<div class="info">Confirmed slot ' + convertDateToString(state.selectedSlot.date) + ' ' + convertSlotNo_to_label(state.selectedSlot.slotId) + '</div>')
-      buttons += '<a href="#" class="calendar__btn" id="confirm">Confirm</a>';
+      buttons += '<a href="#" class="button calendar__btn" id="confirm">Confirm</a>';
     } else if (state.confirmedSlot ) {
       state.messages.push('<div class="info">Confirmed slot ' + convertDateToString(state.confirmedSlot.date) + ' ' + convertSlotNo_to_label(state.confirmedSlot.slotId)+'</div>')
-      buttons += '<a href="#" class="calendar__btn" id="change">Change</a>';
+      buttons += '<a href="#" class="button calendar__btn" id="change">Change</a>';
     } else {
       if (state.selectedSlot) {
         state.messages.push('<div class="info">Selected slot ' + convertDateToString(state.selectedSlot.date) + ' ' + convertSlotNo_to_label(state.selectedSlot.slotId)+'</div>');
         state.messages.push('<div class="warning">You need to confirm it</div>');
-        buttons += '<a href="#" class="calendar__btn" id="confirm">Confirm</a>';
+        buttons += '<a href="#" class="button calendar__btn" id="confirm">Confirm</a>';
       } else {
         state.messages.push('<div class="info">You need to select slot</div>');
-        buttons += '<a href="#" class="calendar__btn calendar__btn--disabled" id="confirm">Confirm</a>';
+        buttons += '<a href="#" class="button calendar__btn calendar__btn--disabled" id="confirm">Confirm</a>';
       }
     }
     
@@ -544,7 +547,10 @@ EE.slotsCalendar = (function(window, $) {
     });
     
     document.getElementById('calendar').addEventListener('click',function (e) {
-      console.log(e.target.getAttribute('id'));
+      
+      console.log('id',e.target.getAttribute('id'));
+      console.log('target',e.target);
+      console.log('currentTarget',e.currentTarget);
       
       var buttonClicked = e.target.getAttribute('id');
       
