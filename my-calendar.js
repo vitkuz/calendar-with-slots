@@ -222,6 +222,8 @@ EE.slotsCalendar = (function(window, $) {
     messages:[],
     calendarOpen: true,
     days: null,
+    scrollPos:0,
+    autoSelectFirstAvailableSlot: true,
     min: min,
     max: max,
   };
@@ -250,10 +252,7 @@ EE.slotsCalendar = (function(window, $) {
   
   function reserveSlot(e) {
     
-    console.log('Reserve slot. Send AJAX request to...');
-  
-    // document.getElementById('confirm').classList.add('calendar__btn--disabled');
-    document.getElementById('confirm').innerHTML = '<img src="./loading_spinner.gif" width="20" height="20"/>';
+    document.getElementById('confirm').innerHTML = 'Confirm <img src="./loading_spinner.gif" width="20" height="20"/>';
     
     // put loading spinner
     
@@ -279,15 +278,19 @@ EE.slotsCalendar = (function(window, $) {
   }
   
   function dateReservationRejected() {
+    
+    var message = document.getElementById('ed-messages-slot-is-no-longer-unavailable').innerHTML || '<div class="error">Selected slot no longer available. Pick another one </div>';
+    message = message.replace('{{slot}}', convertSlotNo_to_label(state.selectedSlot.slotId));
+    
     state.selectedSlot = null;
-    state.messages.push('<div class="error">Selected slot no longer avalible. ' +
-        '<a href="#" id="calendar-reload">Reload</div>');
-    renderCalendar();
-    // getData();
+    state.messages.push(message);
+    // renderCalendar();
+    getData(true);
   }
   
   function changeSlot() {
     state.calendarOpen = true;
+    state.scrollPos = document.getElementById("calendar-slots").scrollTop;
     renderCalendar();
   }
   
@@ -332,7 +335,50 @@ EE.slotsCalendar = (function(window, $) {
     return template.replace('{{slots}}', slotsStr);
   }
   
+  function removeEventListeners() {
+    document.getElementById("calendar-next").removeEventListener('click', selectNext);
+    document.getElementById("calendar-prev").removeEventListener('click', selectPrev);
+  }
+  
+  function attachEventListeners() {
+    document.getElementById("calendar-next").addEventListener('click', selectNext);
+    document.getElementById("calendar-prev").addEventListener('click', selectPrev);
+  }
+  
+  
+  function renderMessages() {
+    
+    if (state.confirmedSlot && state.selectedSlot) {
+      state.messages.push('<div class="info"><p>New selected slot ' + convertSlotNo_to_label(state.selectedSlot.slotId) + ', '+ convertDateToString(state.selectedSlot.date) + ' ' +'</p></div>')
+      state.messages.push('<div class="info"><p>Confirmed ' + convertSlotNo_to_label(state.confirmedSlot.slotId) + ', ' + convertDateToString(state.confirmedSlot.date) + ' ' + '</p></div>')
+    } else if (state.confirmedSlot ) {
+      state.messages.push('<div class="info"><p>Confirmed ' + convertSlotNo_to_label(state.confirmedSlot.slotId) + ', ' + convertDateToString(state.confirmedSlot.date) + ' ' +'</p></div>')
+    } else {
+      if (state.selectedSlot) {
+        state.messages.push('<div class="info"><p>Selected slot ' + convertSlotNo_to_label(state.selectedSlot.slotId) + ', '+ convertDateToString(state.selectedSlot.date) + '</p></div>');
+        state.messages.push('<div class="warning"><p>You need to confirm it</p></div>');
+      } else {
+        state.messages.push('<div class="info"><p>You need to select slot</p></div>');
+      }
+    }
+    
+    var messageStr = '';
+  
+    if (state.messages.length > 0) {
+      state.messages.forEach(function (msg) {
+        messageStr += msg;
+      })
+    }
+    
+    document.getElementById('messages').innerHTML = messageStr;
+  
+    state.messages = [];
+    
+  }
+  
   function renderCalendar(date) {
+  
+    // removeEventListeners();
     
     var selectedDay = date || state.selectedDay;
     // selectedDay.setHours(0,0,0,0);
@@ -350,8 +396,8 @@ EE.slotsCalendar = (function(window, $) {
     
     var calendarTitleStr = convertDateToString(selectedDay);
     
-    var calendarPrevBtn = '<div><a href="#" class="calendar__prev-btn '+prevBtnClasses+'"><span aria-hidden="true" id="calendar-prev" class="ee-icon-chevronback"></span></a></div>';
-    var calendarNextBtn = '<div><a href="#" class="calendar__next-btn '+nextBtnClasses+'"><span aria-hidden="true" id="calendar-next" class="ee-icon-chevronnext"></span></a></div>';
+    var calendarPrevBtn = '<div><a href="#" class="calendar__prev-btn ' + prevBtnClasses + '" id="calendar-prev"><span aria-hidden="true" class="ee-icon-chevronback"></span></a></div>';
+    var calendarNextBtn = '<div><a href="#" class="calendar__next-btn ' + nextBtnClasses + '" id="calendar-next"><span aria-hidden="true" class="ee-icon-chevronnext"></span></a></div>';
     var calendarTitle = '<div>' + calendarTitleStr + '</div>';
   
     var calendarHeader = '<div class="calendar__header">' + calendarPrevBtn + calendarTitle + calendarNextBtn + '</div>';
@@ -390,7 +436,7 @@ EE.slotsCalendar = (function(window, $) {
   
     calendarDates = calendarDates.replace('{{days}}', days);
   
-    var calendarSlots = '<div class="calendar__slots">{{slots}}</div>';
+    var calendarSlots = '<div id="calendar-slots" class="calendar__slots">{{slots}}</div>';
     var slots = '';
     
     state.days.forEach(function (day) {
@@ -408,40 +454,25 @@ EE.slotsCalendar = (function(window, $) {
     
     
     var calendarFooter = '<div class="calendar__footer">' +
-        '<div id="messages" class="calendar__messages">{{messages}}</div>' +
+        '<div id="messages" class="calendar__messages"></div>' +
         '<div>{{buttons}}</div></div>';
-    
+  
+  
     var buttons = '';
-    
+  
     if (state.confirmedSlot && state.selectedSlot) {
-      state.messages.push('<div class="info">New selected slot ' + convertDateToString(state.selectedSlot.date) + ' ' + convertSlotNo_to_label(state.selectedSlot.slotId) +'</div>')
-      state.messages.push('<div class="info">Confirmed slot ' + convertDateToString(state.selectedSlot.date) + ' ' + convertSlotNo_to_label(state.selectedSlot.slotId) + '</div>')
       buttons += '<a href="#" class="button calendar__btn" id="confirm">Confirm</a>';
     } else if (state.confirmedSlot ) {
-      state.messages.push('<div class="info">Confirmed slot ' + convertDateToString(state.confirmedSlot.date) + ' ' + convertSlotNo_to_label(state.confirmedSlot.slotId)+'</div>')
       buttons += '<a href="#" class="button calendar__btn" id="change">Change</a>';
     } else {
       if (state.selectedSlot) {
-        state.messages.push('<div class="info">Selected slot ' + convertDateToString(state.selectedSlot.date) + ' ' + convertSlotNo_to_label(state.selectedSlot.slotId)+'</div>');
-        state.messages.push('<div class="warning">You need to confirm it</div>');
         buttons += '<a href="#" class="button calendar__btn" id="confirm">Confirm</a>';
       } else {
-        state.messages.push('<div class="info">You need to select slot</div>');
         buttons += '<a href="#" class="button calendar__btn calendar__btn--disabled" id="confirm">Confirm</a>';
       }
     }
-    
-    calendarFooter = calendarFooter.replace('{{buttons}}', buttons);
-    
-    var messageStr = '';
   
-    if (state.messages.length > 0) {
-      state.messages.forEach(function (msg) {
-        messageStr += msg;
-      })
-    }
-    
-    calendarFooter = calendarFooter.replace('{{messages}}', messageStr);
+    calendarFooter = calendarFooter.replace('{{buttons}}', buttons);
     
     if (state.calendarOpen) {
       document.getElementById('calendar').innerHTML ='<div id="calendar-selected" class="open">' + calendarHeader + calendarDates + calendarSlots + '</div>' + calendarFooter;
@@ -449,16 +480,26 @@ EE.slotsCalendar = (function(window, $) {
       document.getElementById('calendar').innerHTML ='<div id="calendar-selected" class="close">' + calendarHeader + calendarDates + calendarSlots + '</div>' + calendarFooter;
     }
     
+    // set scroll position how it was before rendering
+    document.getElementById("calendar-slots").scrollTop = state.scrollPos;
     
-    state.messages = [];
+    renderMessages();
+    attachEventListeners();
+  }
+  
+  function renderNoSlotsAvalibleMessage() {
+    var message = document.getElementById('ed-messages-all-slots-are-booked').innerHTML || '<div>Sorry, we\'re out of slots for the next seven days. Please use standart delivery.</div>';
+    document.getElementById('calendar').innerHTML = message;
   }
   
   function renderTimeoutError() {
-    document.getElementById('calendar').innerHTML = '<div>Timeout. Please retry <br/><a href="#" id="calendar-retry">> Do again</a></div>'
+    var message = document.getElementById('ed-messages-timeout-error').innerHTML || '<div>Timeout. Please retry <br/><a href="#" id="calendar-retry">> Do again</a></div>';
+    document.getElementById('calendar').innerHTML = message;
   }
   
   function renderAPIError() {
-    document.getElementById('calendar').innerHTML = '<div>We cant give you slot due to API error <br/><a href="#" id="calendar-reload">> Reload calendar</a></div>'
+    var message = document.getElementById('ed-messages-api-error').innerHTML || '<div>We cant give you slot due to API error <br/><a href="#" id="calendar-reload">> Reload calendar</a></div>';
+    document.getElementById('calendar').innerHTML = message;
   }
   
   function retry() {
@@ -496,15 +537,20 @@ EE.slotsCalendar = (function(window, $) {
           date: state.days[i].slots[0].date,
           slotId: state.days[i].slots[0].slotId,
         }
-        renderCalendar();
         break;
       }
     }
   }
   
-  function getData() {
+  function getData(updateJustSlots) {
     
-    document.getElementById('calendar').innerHTML = '<img src="./loading_spinner.gif" />';
+    if (updateJustSlots) {
+      var message = document.getElementById('ed-messages-loading').innerHTML || '<div class="calender__slots-spinner"><img src="./loading_spinner.gif" width="30" height="30"/> Loading delivery times...</div>';
+      document.getElementById('calendar-slots').innerHTML = message;
+    } else {
+      document.getElementById('calendar').innerHTML = '<img src="./loading_spinner.gif" />';
+    }
+    
     
     $.ajax({
       url: 'http://localhost:5000/slots',
@@ -512,24 +558,46 @@ EE.slotsCalendar = (function(window, $) {
     }).done(function(data){
       
       state.days = data;
-      selectFirstAvailableSlot();
-      //renderCalendar();
+      
+      var availableSlots = [];
+      
+      state.days.forEach(function (day) {
+        if(day.slots.length > 0) {
+          availableSlots = availableSlots.concat(day.slots);
+        }
+      });
+      
+      if (availableSlots.length > 0) {
+        if (state.autoSelectFirstAvailableSlot) {
+          state.autoSelectFirstAvailableSlot = false;
+          selectFirstAvailableSlot();
+        }
+        
+      } else {
+        document.dispatchEvent(new Event('calendarNoAvailableSlots'));
+        return renderNoSlotsAvalibleMessage();
+      }
+      
+      renderCalendar();
+    
       
     }).fail(function(jqXHR, textStatus){
       
       if(textStatus === 'timeout')
       {
         if (state.errorCount > state.errorThreshold) {
-          renderAPIError()
+          renderAPIError();
+          document.dispatchEvent(new Event('calendarApiError'));
         } else {
           state.errorCount ++;
-          console.log('Timeout error happened:', state.errorCount);
           renderTimeoutError()
+          document.dispatchEvent(new Event('calendarTimeoutError'));
         }
 
       } else {
-        console.log('Cant reach API:', textStatus);
-        renderAPIError()
+        state.errorCount = 0;
+        renderAPIError();
+        document.dispatchEvent(new Event('calendar-api-error'));
       }
       
     })
@@ -571,26 +639,19 @@ EE.slotsCalendar = (function(window, $) {
         selectDay(e);
    
       } else if (buttonClicked.search(/slot/) >= 0) {
-        
+        state.scrollPos = document.getElementById("calendar-slots").scrollTop;
         // selectSlot();
-        
-      } else if (buttonClicked === 'calendar-next') {
-        
-        selectNext(e);
-      } else if (buttonClicked === 'calendar-prev') {
-        selectPrev(e);
       } else if (buttonClicked === 'confirm') {
         reserveSlot()
       }
       else if (buttonClicked === 'change') {
+       
         changeSlot();
       }
       
     });
     
-    getData(function(data) {
-      console.log(data);
-    });
+    getData();
     
     return {
       name: options.name,
@@ -609,4 +670,11 @@ var calendar1 = EE.slotsCalendar({
   name:1
 });
 
-console.log(calendar1)
+
+document.addEventListener('calendar-api-error', function (e) {
+  console.log('Custom event was dispatched: api-error', e);
+}, false);
+
+document.addEventListener('calendar-timeout-error', function (e) {
+  console.log('Custom event was dispatched: timeout-error', e);
+}, false);

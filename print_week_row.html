@@ -58,7 +58,10 @@
   </div>
 
   <div id="ed-messages-slot-is-no-longer-unavailable">
-    Oops, {{slot}} slot is no longer available. Please try a different time.
+    <div class="info">
+      <p style="color: red">(!) Oooops!</p>
+      <p>Oops, <strong>{{slot}}</strong> slot is no longer available. Please try a different time.</p>
+    </div>
   </div>
 
   <div id="ed-messages-address-not-eligible">
@@ -67,6 +70,14 @@
 
   <div id="ed-messages-all-slots-are-booked">
     Sorry, we're out of slots for the next seven days. Please use standart delivery.
+  </div>
+
+  <div id="ed-messages-timeout-error">
+    Timeout. Please retry <br/><a href="#" id="calendar-retry">> Do again</a>
+  </div>
+
+  <div id="ed-messages-api-error">
+    We cant give you slot due to API error <br/><a href="#" id="calendar-reload">> Reload calendar</a>
   </div>
 
 </div>

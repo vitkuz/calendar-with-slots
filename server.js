@@ -233,6 +233,8 @@ app.use('/slots', (req,res,next) => {
       if (Math.random() >= 0.5) {
         demoSlots = [];
       }
+  
+      // demoSlots = [];
       
       //filter available dates
       var onlyAvailable = [];

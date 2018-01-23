@@ -40,12 +40,6 @@ td.selected {
   justify-content: space-between;
 }
 
-#messages {
-  padding: 10px;
-  border:1px solid
-}
-
-
 .active {
   color: red
 }
@@ -169,6 +163,10 @@ td.selected {
   text-align: center;
 }
 
+.calendar .timeslot-picker__list {
+  min-width: 100%;
+}
+
 
 .calendar__header {
   display: flex;
@@ -192,7 +190,7 @@ td.selected {
 }
 
 .calendar__slots {
-  height:250px;
+  height:175px;
   overflow-y: scroll;
 }
 
@@ -268,4 +266,16 @@ td.selected {
 .calendar__slots {
   height:250px;
   overflow-y: scroll;
+}
+
+.calendar__messages {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.calendar__messages p {
+  margin-top: 0;
+  margin-bottom: 0;
 }
